@@ -7,11 +7,13 @@ import {
 import { ThemeProvider } from "styled-components";
 import { GlobalStyle } from './App.styles';
 import Home from './Pages/Home/Home';
+import Navbar from './Components/Navbar/Navbar';
 
 export default function App() {
   return (
     <Router>
       <GlobalStyle />
+      <Navbar />
       <Routes>
         <Page exact path="/" component={Home} />
       </Routes>
