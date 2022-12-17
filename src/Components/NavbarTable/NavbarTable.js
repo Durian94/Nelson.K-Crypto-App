@@ -1,10 +1,9 @@
 import React from "react";
-import { TableRowContainer, TableData} from "./NavbarTable.styles";
+import { TableRowContainer, TableData } from "./NavbarTable.styles";
 
 export default class NavbarTable extends React.Component {
-  
-    render() {
-      return (
+  render() {
+    return (
       <TableRowContainer>
         <TableData>Coins 7884</TableData>
         <TableData>Exchange 622</TableData>
@@ -13,7 +12,6 @@ export default class NavbarTable extends React.Component {
         <TableData>44%</TableData>
         <TableData>21%</TableData>
       </TableRowContainer>
-      )
-    }
+    );
   }
-  
+}

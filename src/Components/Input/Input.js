@@ -1,1 +1,3 @@
-export const Input = ({className}) => <input className={className} placeholder="Search..." />;
+export const Input = ({ className }) => (
+  <input className={className} placeholder="Search..." />
+);
