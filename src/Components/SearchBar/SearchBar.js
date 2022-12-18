@@ -6,7 +6,7 @@ export default class Search extends React.Component {
     return (
       <SearchForm>
         <StyledSearchIcon />
-        <SearchInput />
+        <SearchInput placeholder="Search..."/>
       </SearchForm>
     );
   }
