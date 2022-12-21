@@ -3,12 +3,12 @@ import { NavLink } from "react-router-dom";
 
 export const Container = styled.div`
   display: flex;
-  background-color: hsl(220, 11%, 11%);
+  background-color: ${(props) => props.theme.secondary};
   padding: 1.5rem 0 1.2rem 4.5rem;
 `;
 
 export const StyledNavLink = styled(NavLink)`
-  color: hsl(180, 8%, 97%);
+  color: ${(props) => props.theme.textColor};
   text-decoration: none;
   font-size: 23px;
   font-weight: 700;
@@ -28,7 +28,7 @@ export const RightNavContainer = styled.div`
 `;
 
 export const CurrencyButton = styled.div`
-  background-color: hsl(222, 10%, 19%);
+  background-color: ${(props) => props.theme.main};
   border-radius: 0.5rem;
   font-weight: 700;
   padding: 0 1.5rem;
@@ -41,7 +41,7 @@ export const CurrencyButton = styled.div`
 `;
 
 export const ThemeButton = styled.div`
-  background-color: hsl(222, 10%, 19%);
+  background-color: ${(props) => props.theme.main};
   padding: 0 1rem;
   border-radius: 0.5rem;
   display: flex;

@@ -1,4 +1,4 @@
-import { styled, createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   * {
@@ -7,8 +7,8 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   body {
-    background-color: hsl(227, 13%, 14%); 
+    background-color: ${(props) => props.theme.main}; 
     font-family: 'Poppins', sans-serif;
-    color: hsl(180, 8%, 97%);
+    color: ${(props) => props.theme.textColor};
   }
 `;
