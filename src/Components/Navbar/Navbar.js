@@ -12,9 +12,11 @@ import {
 import GreenArrow from "./green-arrow.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun } from "@fortawesome/free-solid-svg-icons";
+import { faMoon } from "@fortawesome/free-solid-svg-icons";
 
 export default class Navbar extends React.Component {
   render() {
+    const { handleTheme, isThemeDark } = this.props;
     return (
       <>
         <Container>
@@ -23,15 +25,16 @@ export default class Navbar extends React.Component {
             <StyledNavLink>Portfolio</StyledNavLink>
           </NavContainer>
           <RightNavContainer>
-            <Search />
+            <Search isThemeDark={isThemeDark} />
             <CurrencyButton>
               <p>
                 $ USD
                 <img src={GreenArrow} alt="arrow" />
               </p>
             </CurrencyButton>
-            <ThemeButton>
-              <FontAwesomeIcon icon={faSun} />
+            <ThemeButton onClick={handleTheme}>
+              {isThemeDark && <FontAwesomeIcon icon={faSun} />}
+              {!isThemeDark && <FontAwesomeIcon icon={faMoon} />}
             </ThemeButton>
           </RightNavContainer>
         </Container>
