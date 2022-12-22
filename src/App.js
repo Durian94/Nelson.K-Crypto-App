@@ -35,17 +35,24 @@ export default class App extends React.Component {
     localStorage.setItem("isThemeDark", JSON.stringify(this.state.isThemeDark));
   };
 
+  componentDidMount() {
+    if (JSON.parse(localStorage.getItem("isThemeDark")) !== null)
+      this.setState({
+        isThemeDark: JSON.parse(localStorage.getItem("isThemeDark")),
+      });
+  }
+  componentDidUpdate() {
+    this.setInStorage();
+  }
+
   render() {
-    const currentTheme =
-      JSON.parse(localStorage.getItem("isThemeDark")) === null
-        ? this.state.isThemeDark
-        : JSON.parse(localStorage.getItem("isThemeDark"));
+    const { isThemeDark } = this.state;
 
     return (
-      <ThemeProvider theme={currentTheme ? darkTheme : lightTheme}>
+      <ThemeProvider theme={isThemeDark ? darkTheme : lightTheme}>
         <Router>
           <GlobalStyle />
-          <Navbar handleTheme={this.handleTheme} isThemeDark={currentTheme} />
+          <Navbar handleTheme={this.handleTheme} isThemeDark={isThemeDark} />
           <Routes>
             <Page exact path="/" component={Home} />
           </Routes>
