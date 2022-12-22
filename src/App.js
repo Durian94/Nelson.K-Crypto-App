@@ -41,8 +41,10 @@ export default class App extends React.Component {
         isThemeDark: JSON.parse(localStorage.getItem("isThemeDark")),
       });
   }
-  componentDidUpdate() {
-    this.setInStorage();
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.isThemeDark !== this.state.isThemeDark) {
+      this.setInStorage();
+    }
   }
 
   render() {
