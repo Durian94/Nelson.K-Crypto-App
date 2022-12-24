@@ -36,10 +36,11 @@ export default class App extends React.Component {
   };
 
   componentDidMount() {
-    if (JSON.parse(localStorage.getItem("isThemeDark")) !== null)
+    if (JSON.parse(localStorage.getItem("isThemeDark")) !== null) {
       this.setState({
         isThemeDark: JSON.parse(localStorage.getItem("isThemeDark")),
       });
+    }
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevState.isThemeDark !== this.state.isThemeDark) {
@@ -56,7 +57,7 @@ export default class App extends React.Component {
           <GlobalStyle />
           <Navbar handleTheme={this.handleTheme} isThemeDark={isThemeDark} />
           <Routes>
-            <Page exact path="/" component={Home} />
+            <Page exact path="/" element={<Home />} />
           </Routes>
         </Router>
       </ThemeProvider>
