@@ -3,14 +3,32 @@ import { TableRowContainer, TableData } from "./NavbarTable.styles";
 
 export default class NavbarTable extends React.Component {
   render() {
+    const { isLoading, hasError, navbarData } = this.props;
+
     return (
       <TableRowContainer>
-        <TableData>Coins 7884</TableData>
-        <TableData>Exchange 622</TableData>
-        <TableData>$1.69T</TableData>
-        <TableData>$124.45B</TableData>
-        <TableData>44%</TableData>
-        <TableData>21%</TableData>
+        {isLoading && <p>Loading...</p>}
+        {!isLoading && hasError && <p>Error</p>}
+        {!isLoading && !hasError && navbarData !== null && (
+          <>
+            <TableData>
+              Coins {navbarData.data.active_cryptocurrencies}
+            </TableData>
+            <TableData>Exchanges {navbarData.data.markets}</TableData>
+            <TableData>
+              ${navbarData.data.total_market_cap.usd.toString().slice(0, 3)}B
+            </TableData>
+            <TableData>
+              ${navbarData.data.total_volume.usd.toString().slice(0, 2)}B
+            </TableData>
+            <TableData>
+              {navbarData.data.market_cap_percentage.btc.toFixed(0)}%
+            </TableData>
+            <TableData>
+              {navbarData.data.market_cap_percentage.eth.toFixed(0)}%
+            </TableData>
+          </>
+        )}
       </TableRowContainer>
     );
   }

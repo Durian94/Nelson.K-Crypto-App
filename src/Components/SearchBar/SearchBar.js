@@ -1,7 +1,7 @@
 import React from "react";
 import { SearchForm, StyledSearchIcon, SearchInput } from "./SearchBar.styles";
-import SearchIcon from "../SearchBar/Search.png";
-import SearchIconLight from "../SearchBar/Search-light.png";
+import SearchIcon from "../../assets/images/Search.png";
+import SearchIconLight from "../../assets/images/Search-light.png";
 
 export default class Search extends React.Component {
   render() {
