@@ -10,7 +10,7 @@ import {
   CurrencyButton,
   ThemeButton,
 } from "./Navbar.styles";
-import GreenArrow from "./green-arrow.png";
+import GreenArrow from "../../assets/images/green-arrow.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun } from "@fortawesome/free-solid-svg-icons";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
