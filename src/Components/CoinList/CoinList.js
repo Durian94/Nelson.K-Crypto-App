@@ -3,7 +3,7 @@ import { Container, CoinItem } from "./CoinList.styles";
 
 export default class CoinList extends React.Component {
   render() {
-    const { isLoading, hasError, coinData } = this.props;
+    const { isLoading, hasError, coinListData } = this.props;
 
     return (
       <Container>
@@ -11,7 +11,7 @@ export default class CoinList extends React.Component {
         {!isLoading && hasError && <p>Data Unavailable</p>}
         {!isLoading &&
           !hasError &&
-          coinData.map((item) => (
+          coinListData.map((item) => (
             <CoinItem key={item.id}>
               <p>{item.market_cap_rank}</p>
               <img src={item.image} alt="coin-logo" />
