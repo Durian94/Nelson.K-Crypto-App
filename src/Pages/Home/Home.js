@@ -1,15 +1,18 @@
 import React from "react";
-import CoinList from "../../Components/CoinList/CoinList";
 import axios from "axios";
+import CoinList from "../../Components/CoinList/CoinList";
+import BitcoinChart from "../../Components/BitcoinChart/BitcoinChart";
+import { Container } from "./Home.styles";
 
 export default class Home extends React.Component {
   state = {
     isLoading: false,
     hasError: false,
-    coinData: [],
+    coinListData: [],
+    bitcoinChartData: null,
   };
 
-  getCoinData = async () => {
+  getCoinListData = async () => {
     try {
       this.setState({ isLoading: true });
       const { data } = await axios(
@@ -40,17 +43,36 @@ export default class Home extends React.Component {
           };
         }
       );
-      this.setState({ coinData: coinItem, isLoading: false });
+      this.setState({ coinListData: coinItem, isLoading: false });
+    } catch (err) {
+      this.setState({ hasError: true, isLoading: false });
+    }
+  };
+
+  getBitcoinData = async () => {
+    try {
+      this.setState({ isLoading: true });
+      const { data } = await axios(
+        "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=15&interval=daily"
+      );
+
+      this.setState({ bitcoinChartData: data, isLoading: false });
     } catch (err) {
       this.setState({ hasError: true, isLoading: false });
     }
   };
 
   componentDidMount() {
-    this.getCoinData();
+    this.getCoinListData();
+    this.getBitcoinData();
   }
 
   render() {
-    return <CoinList {...this.state} />;
+    return (
+      <Container>
+        <BitcoinChart {...this.state} />
+        <CoinList {...this.state} />
+      </Container>
+    );
   }
 }
