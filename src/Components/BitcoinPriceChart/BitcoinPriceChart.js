@@ -11,6 +11,7 @@ import {
   Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { shortHandCurrency } from "../../utilities/formatMoney/formatMoney";
 import {
   ChartContainer,
   ChartHeader,
@@ -95,7 +96,7 @@ export default class BitcoinPriceChart extends React.Component {
       <ChartContainer>
         <ChartHeader>
           <p>BTC Price</p>
-          <h3>{currentPrice}</h3>
+          <h3>{shortHandCurrency(currentPrice)}</h3>
           <p>{getDate.toString().slice(4, 16)}</p>
         </ChartHeader>
         <Line options={options} data={data} />

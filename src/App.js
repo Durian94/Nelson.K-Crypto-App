@@ -12,12 +12,14 @@ import Navbar from "./Components/Navbar/Navbar";
 const darkTheme = {
   main: "hsl(227, 13%, 14%)",
   secondary: "hsl(220, 11%, 11%)",
+  inverted: "hsl(0, 0%, 100%)",
   textColor: "hsl(180, 8%, 97%)",
 };
 
 const lightTheme = {
   main: "hsl(0, 0%, 98%)",
   secondary: "hsl(0, 0%, 100%)",
+  inverted: "hsl(220, 11%, 11%)",
   textColor: "hsl(222, 10%, 19%)",
 };
 
