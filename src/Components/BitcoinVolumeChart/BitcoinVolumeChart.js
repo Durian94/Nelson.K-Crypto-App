@@ -9,6 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { shortHandCurrency } from "../../utilities/formatMoney/formatMoney";
 import {
   ChartContainer,
   ChartHeader,
@@ -79,7 +80,7 @@ export default class BitcoinVolumeChart extends React.Component {
       <ChartContainer>
         <ChartHeader>
           <p>BTC Volume 24h</p>
-          <h3>{currentVolume}</h3>
+          <h3>{shortHandCurrency(currentVolume)}</h3>
           <p>{getDate.toString().slice(4, 16)}</p>
         </ChartHeader>
         <Bar options={options} data={data} />

@@ -21,6 +21,7 @@ export default class Home extends React.Component {
       const coinItem = data.map(
         ({
           id,
+          market_cap,
           market_cap_rank,
           image,
           name,
@@ -29,9 +30,14 @@ export default class Home extends React.Component {
           price_change_percentage_1h_in_currency,
           price_change_percentage_24h_in_currency,
           price_change_percentage_7d_in_currency,
+          total_volume,
+          total_supply,
+          circulating_supply,
+          sparkline_in_7d,
         }) => {
           return {
             id,
+            market_cap,
             market_cap_rank,
             image,
             name,
@@ -40,9 +46,14 @@ export default class Home extends React.Component {
             price_change_percentage_1h_in_currency,
             price_change_percentage_24h_in_currency,
             price_change_percentage_7d_in_currency,
+            total_volume,
+            total_supply,
+            circulating_supply,
+            sparkline_in_7d,
           };
         }
       );
+
       this.setState({ coinListData: coinItem, isLoading: false });
     } catch (err) {
       this.setState({ hasError: true, isLoading: false });
