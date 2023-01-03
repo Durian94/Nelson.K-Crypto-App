@@ -5,8 +5,13 @@ export const Container = styled.div`
   font-size: 16px;
   font-weight: 700;
   background-color: ${(props) => props.theme.secondary};
-  padding: 1.5rem 1.1rem 2.5rem 1.1rem;
+  padding: 1.5rem 1.1rem 3rem 1.1rem;
   border-radius: 0.7rem;
+  margin-bottom: 3rem;
+
+  div:last-child {
+    border: none;
+  }
 `;
 
 export const Header = styled.h3`

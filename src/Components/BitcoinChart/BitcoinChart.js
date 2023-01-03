@@ -1,7 +1,7 @@
 import React from "react";
 import BitcoinVolumeChart from "../BitcoinVolumeChart/BitcoinVolumeChart";
 import BitcoinPriceChart from "../BitcoinPriceChart/BitcoinPriceChart";
-import { Container } from "./BitcoinChart.styles";
+import { Container, MainHeader } from "./BitcoinChart.styles";
 
 export default class BitcoinChart extends React.Component {
   render() {
@@ -11,13 +11,16 @@ export default class BitcoinChart extends React.Component {
     return (
       <>
         {!isLoading && !hasError && hasData && (
-          <Container>
-            <BitcoinPriceChart
-              chartData={bitcoinChartData}
-              currentPrice={coinListData[0].current_price}
-            />
-            <BitcoinVolumeChart chartData={bitcoinChartData} />
-          </Container>
+          <>
+            <MainHeader>Your overview</MainHeader>
+            <Container>
+              <BitcoinPriceChart
+                chartData={bitcoinChartData}
+                currentPrice={coinListData[0].current_price}
+              />
+              <BitcoinVolumeChart chartData={bitcoinChartData} />
+            </Container>
+          </>
         )}
       </>
     );

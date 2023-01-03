@@ -63,12 +63,12 @@ export default class BitcoinPriceChart extends React.Component {
     };
 
     const data = {
-      labels: chartData.prices.map((item) =>
-        new Date(item[0]).toString().slice(4, 10)
-      ),
+      labels: chartData.prices
+        .map((item) => new Date(item[0]).toString().slice(4, 10))
+        .slice(0, -1),
       datasets: [
         {
-          data: chartData.prices.map((item) => item[1]),
+          data: chartData.prices.map((item) => item[1]).slice(0, -1),
           borderColor: "hsl(142, 100%, 54%)",
 
           backgroundColor: (context) => {
@@ -87,7 +87,7 @@ export default class BitcoinPriceChart extends React.Component {
       ],
     };
 
-    const todayInMiliseconds = chartData.total_volumes.slice(15);
+    const todayInMiliseconds = chartData.total_volumes.slice(14);
     const getDate = new Date(
       parseFloat(todayInMiliseconds.map((item) => item[0]))
     );
