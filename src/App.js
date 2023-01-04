@@ -14,6 +14,7 @@ const darkTheme = {
   secondary: "hsl(220, 11%, 11%)",
   inverted: "hsl(0, 0%, 100%)",
   textColor: "hsl(180, 8%, 97%)",
+  searchBarColor: "hsl(222, 10%, 19%)",
 };
 
 const lightTheme = {
@@ -21,6 +22,7 @@ const lightTheme = {
   secondary: "hsl(0, 0%, 100%)",
   inverted: "hsl(220, 11%, 11%)",
   textColor: "hsl(222, 10%, 19%)",
+  searchBarColor: "hsl(0, 0%, 98%)",
 };
 
 export default class App extends React.Component {
