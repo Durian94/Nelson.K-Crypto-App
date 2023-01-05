@@ -96,7 +96,10 @@ export default class BitcoinPriceChart extends React.Component {
       <ChartContainer>
         <ChartHeader>
           <p>BTC Price</p>
-          <h3>{shortHandCurrency(currentPrice)}</h3>
+          <h3>
+            {this.props.currencySymbol}
+            {shortHandCurrency(currentPrice)}
+          </h3>
           <p>{getDate.toString().slice(4, 16)}</p>
         </ChartHeader>
         <Line options={options} data={data} />

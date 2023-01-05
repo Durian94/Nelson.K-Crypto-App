@@ -5,9 +5,11 @@ const CoinListBar = ({ className, ...props }) => (
   <div className={className}>
     <ProgressBarData>
       <p>
+        {props.currencySymbol}
         {props.leftData === null ? Infinity : shortHandCurrency(props.leftData)}
       </p>
       <p>
+        {props.currencySymbol}
         {props.rightData === null
           ? Infinity
           : shortHandCurrency(props.rightData)}

@@ -28,11 +28,16 @@ const lightTheme = {
 export default class App extends React.Component {
   state = {
     isThemeDark: true,
+    currency: "usd",
   };
 
   handleTheme = () => {
     this.setState({ isThemeDark: !this.state.isThemeDark });
     this.setInStorage();
+  };
+
+  getCurrencyChange = (e) => {
+    this.setState({ currency: e.target.value });
   };
 
   setInStorage = () => {
@@ -45,23 +50,49 @@ export default class App extends React.Component {
         isThemeDark: JSON.parse(localStorage.getItem("isThemeDark")),
       });
     }
+    if (JSON.parse(localStorage.getItem("currency")) !== null) {
+      this.setState({
+        currency: JSON.parse(localStorage.getItem("currency")),
+      });
+    }
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevState.isThemeDark !== this.state.isThemeDark) {
       this.setInStorage();
     }
+    if (prevState.currency !== this.state.currency) {
+      localStorage.setItem("currency", JSON.stringify(this.state.currency));
+    }
   }
 
   render() {
-    const { isThemeDark } = this.state;
+    const { isThemeDark, currency } = this.state;
+    const currencySymbol = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currency,
+    })
+      .format(0)
+      .replace(/[a-zA-Z0-9.]/g, "");
 
     return (
       <ThemeProvider theme={isThemeDark ? darkTheme : lightTheme}>
         <Router>
           <GlobalStyle />
-          <Navbar handleTheme={this.handleTheme} isThemeDark={isThemeDark} />
+          <Navbar
+            handleTheme={this.handleTheme}
+            getCurrency={this.getCurrencyChange}
+            isThemeDark={isThemeDark}
+            currency={currency}
+            currencySymbol={currencySymbol}
+          />
           <Routes>
-            <Page exact path="/" element={<Home />} />
+            <Page
+              exact
+              path="/"
+              element={
+                <Home currency={currency} currencySymbol={currencySymbol} />
+              }
+            />
           </Routes>
         </Router>
       </ThemeProvider>

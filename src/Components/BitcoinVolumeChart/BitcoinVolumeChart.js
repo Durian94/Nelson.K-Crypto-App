@@ -81,7 +81,10 @@ export default class BitcoinVolumeChart extends React.Component {
       <ChartContainer>
         <ChartHeader>
           <p>BTC Volume 24h</p>
-          <h3>{shortHandCurrency(currentVolume)}</h3>
+          <h3>
+            {this.props.currencySymbol}
+            {shortHandCurrency(currentVolume)}
+          </h3>
           <p>{getDate.toString().slice(4, 16)}</p>
         </ChartHeader>
         <Bar options={options} data={data} />
