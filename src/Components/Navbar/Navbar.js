@@ -9,11 +9,12 @@ import {
   RightNavContainer,
   CurrencyButton,
   ThemeButton,
+  StyledCurrencySelector,
 } from "./Navbar.styles";
-import GreenArrow from "../../assets/images/green-arrow.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun } from "@fortawesome/free-solid-svg-icons";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
+import GreenArrow from "../../assets/images/positiveArrow.svg";
 
 export default class Navbar extends React.Component {
   state = {
@@ -41,7 +42,8 @@ export default class Navbar extends React.Component {
   }
 
   render() {
-    const { handleTheme, isThemeDark } = this.props;
+    const { handleTheme, isThemeDark, getCurrency, currency, currencySymbol } =
+      this.props;
 
     return (
       <>
@@ -53,10 +55,12 @@ export default class Navbar extends React.Component {
           <RightNavContainer>
             <Search isThemeDark={isThemeDark} />
             <CurrencyButton>
-              <p>
-                $ USD
-                <img src={GreenArrow} alt="arrow" />
-              </p>
+              <p>{currencySymbol}</p>
+              <StyledCurrencySelector
+                getCurrency={getCurrency}
+                currency={currency}
+              />
+              <img src={GreenArrow} alt="green-arrow" />
             </CurrencyButton>
             <ThemeButton onClick={handleTheme}>
               {isThemeDark && <FontAwesomeIcon icon={faSun} />}
@@ -64,7 +68,11 @@ export default class Navbar extends React.Component {
             </ThemeButton>
           </RightNavContainer>
         </Container>
-        <NavbarTable {...this.state} />
+        <NavbarTable
+          {...this.state}
+          currency={currency}
+          currencySymbol={currencySymbol}
+        />
       </>
     );
   }

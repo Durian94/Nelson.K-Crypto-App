@@ -15,7 +15,7 @@ import NegativeArrow from "../../assets/images/negativeArrow.svg";
 
 export default class CoinList extends React.Component {
   render() {
-    const { isLoading, hasError, coinListData } = this.props;
+    const { isLoading, hasError, coinListData, currencySymbol } = this.props;
 
     return (
       <>
@@ -42,7 +42,10 @@ export default class CoinList extends React.Component {
                 <CoinName>
                   {item.name} ({item.symbol.toUpperCase()})
                 </CoinName>
-                <CurrentPrice>{item.current_price}</CurrentPrice>
+                <CurrentPrice>
+                  {currencySymbol}
+                  {item.current_price}
+                </CurrentPrice>
                 <Percentages
                   percent={item.price_change_percentage_1h_in_currency}
                 >
@@ -85,6 +88,7 @@ export default class CoinList extends React.Component {
                 <StyledCoinListBar
                   leftData={item.total_volume}
                   rightData={item.market_cap}
+                  currencySymbol={currencySymbol}
                 />
                 <StyledCoinListBar
                   leftData={item.circulating_supply}

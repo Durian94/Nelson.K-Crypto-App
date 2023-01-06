@@ -5,7 +5,13 @@ import { Container, MainHeader } from "./BitcoinChart.styles";
 
 export default class BitcoinChart extends React.Component {
   render() {
-    const { bitcoinChartData, isLoading, hasError, coinListData } = this.props;
+    const {
+      bitcoinChartData,
+      isLoading,
+      hasError,
+      coinListData,
+      currencySymbol,
+    } = this.props;
     const hasData = bitcoinChartData !== null && coinListData.length;
 
     return (
@@ -17,8 +23,12 @@ export default class BitcoinChart extends React.Component {
               <BitcoinPriceChart
                 chartData={bitcoinChartData}
                 currentPrice={coinListData[0].current_price}
+                currencySymbol={currencySymbol}
               />
-              <BitcoinVolumeChart chartData={bitcoinChartData} />
+              <BitcoinVolumeChart
+                chartData={bitcoinChartData}
+                currencySymbol={currencySymbol}
+              />
             </Container>
           </>
         )}

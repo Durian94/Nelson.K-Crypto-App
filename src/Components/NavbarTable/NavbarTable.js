@@ -10,7 +10,8 @@ import NegativeArrow from "../../assets/images/negativeArrow.svg";
 
 export default class NavbarTable extends React.Component {
   render() {
-    const { isLoading, hasError, navbarData } = this.props;
+    const { isLoading, hasError, navbarData, currency, currencySymbol } =
+      this.props;
 
     return (
       <TableRowContainer>
@@ -23,7 +24,8 @@ export default class NavbarTable extends React.Component {
             </TableData>
             <TableData>Exchanges {navbarData.data.markets}</TableData>
             <TableData>
-              {shortHandCurrency(navbarData.data.total_market_cap.usd)}
+              {currencySymbol}
+              {shortHandCurrency(navbarData.data.total_market_cap[currency])}
               <img
                 src={
                   navbarData.data.market_cap_change_percentage_24h_usd < 0
@@ -34,7 +36,8 @@ export default class NavbarTable extends React.Component {
               />
             </TableData>
             <TableData>
-              {shortHandCurrency(navbarData.data.total_volume.usd)}
+              {currencySymbol}
+              {shortHandCurrency(navbarData.data.total_volume[currency])}
               <NavbarProgressBar
                 width={
                   (navbarData.data.total_volume.usd /

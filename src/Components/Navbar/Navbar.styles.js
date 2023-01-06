@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { CurrencySelector } from "../CurrencySelector/CurrencySelector";
 
 export const Container = styled.div`
   display: flex;
@@ -28,20 +29,40 @@ export const RightNavContainer = styled.div`
 `;
 
 export const CurrencyButton = styled.div`
-  background-color: ${(props) => props.theme.main};
+  background-color: ${({ theme }) => theme.main};
   border-radius: 0.5rem;
-  font-weight: 700;
-  padding: 0 1.5rem;
   display: flex;
   align-items: center;
+  gap: 0.2rem;
+  padding: 0 0.7rem;
 
   img {
-    margin: 0 0 0.3rem 0.3rem;
+    transform: rotate(180deg);
+  }
+
+  p {
+    background-color: hsl(220, 11%, 11%);
+    padding: 0.2rem 0.5rem;
+    border-radius: 1rem;
+    color: hsl(130, 100%, 50%);
+  }
+`;
+
+export const StyledCurrencySelector = styled(CurrencySelector)`
+  select {
+    background-color: ${({ theme }) => theme.main};
+    color: ${({ theme }) => theme.textColor};
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
   }
 `;
 
 export const ThemeButton = styled.div`
-  background-color: ${(props) => props.theme.main};
+  background-color: ${({ theme }) => theme.main};
   padding: 0 1rem;
   border-radius: 0.5rem;
   display: flex;
