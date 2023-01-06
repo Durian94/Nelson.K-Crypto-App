@@ -10,13 +10,18 @@ export default class Home extends React.Component {
     hasError: false,
     coinListData: [],
     bitcoinChartData: null,
+    hasMore: true,
   };
 
-  getCoinListData = async () => {
+  getCoinListData = async (length) => {
     try {
       this.setState({ isLoading: true });
       const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${this.props.currency}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${
+          this.props.currency
+        }&order=market_cap_desc&per_page=${
+          length ? length : 20
+        }&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
       );
       const coinItem = data.map(
         ({
@@ -60,6 +65,14 @@ export default class Home extends React.Component {
     }
   };
 
+  addCoinListLength = () => {
+    if (this.state.coinListData.length === 250) {
+      this.setState({ hasMore: false });
+    } else {
+      this.getCoinListData(this.state.coinListData.length + 20);
+    }
+  };
+
   getBitcoinData = async () => {
     try {
       this.setState({ isLoading: true });
@@ -90,7 +103,11 @@ export default class Home extends React.Component {
     return (
       <Container>
         <BitcoinChart {...this.state} currencySymbol={currencySymbol} />
-        <CoinList {...this.state} currencySymbol={currencySymbol} />
+        <CoinList
+          {...this.state}
+          currencySymbol={currencySymbol}
+          addCoinListLength={this.addCoinListLength}
+        />
       </Container>
     );
   }

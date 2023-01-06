@@ -110,3 +110,13 @@ export const ProgressBar = styled.div`
     border-radius: 0.2rem;
   }
 `;
+
+export const Loader = styled.h4`
+  text-align: center;
+  margin-top: 2rem;
+`;
+
+export const EndMessage = styled.h4`
+  text-align: center;
+  margin-top: 2rem;
+`;
