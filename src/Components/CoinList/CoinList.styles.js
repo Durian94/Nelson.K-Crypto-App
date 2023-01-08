@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import CoinListBar from "../CoinListBar/CoinListBar";
+import { Percentage } from "../Percentages/Percentages";
 
 export const Container = styled.div`
   font-size: 16px;
@@ -66,7 +67,7 @@ export const CurrentPrice = styled.p`
   width: 6rem;
 `;
 
-export const Percentages = styled.div`
+export const Percentages = styled(Percentage)`
   color: ${(props) =>
     props.percent < 0 ? "hsl(348, 99%, 53%)" : "hsl(130, 100%, 50%)"};
   width: 8rem;
@@ -112,11 +113,6 @@ export const ProgressBar = styled.div`
 `;
 
 export const Loader = styled.h4`
-  text-align: center;
-  margin-top: 2rem;
-`;
-
-export const EndMessage = styled.h4`
   text-align: center;
   margin-top: 2rem;
 `;

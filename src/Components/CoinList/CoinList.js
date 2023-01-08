@@ -11,10 +11,7 @@ import {
   Percentages,
   CurrentPrice,
   Loader,
-  EndMessage,
 } from "./CoinList.styles";
-import PositiveArrow from "../../assets/images/positiveArrow.svg";
-import NegativeArrow from "../../assets/images/negativeArrow.svg";
 
 export default class CoinList extends React.Component {
   render() {
@@ -23,8 +20,7 @@ export default class CoinList extends React.Component {
       hasError,
       coinListData,
       currencySymbol,
-      addCoinListLength,
-      hasMore,
+      getCoinListData,
     } = this.props;
 
     return (
@@ -60,43 +56,14 @@ export default class CoinList extends React.Component {
                     </CurrentPrice>
                     <Percentages
                       percent={item.price_change_percentage_1h_in_currency}
-                    >
-                      <img
-                        src={
-                          item.price_change_percentage_1h_in_currency < 0
-                            ? NegativeArrow
-                            : PositiveArrow
-                        }
-                        alt="arrow-icon"
-                      />
-                      {item.price_change_percentage_1h_in_currency.toFixed(2)}%
-                    </Percentages>
+                    />
                     <Percentages
                       percent={item.price_change_percentage_24h_in_currency}
-                    >
-                      <img
-                        src={
-                          item.price_change_percentage_24h_in_currency < 0
-                            ? NegativeArrow
-                            : PositiveArrow
-                        }
-                        alt="arrow-icon"
-                      />
-                      {item.price_change_percentage_24h_in_currency.toFixed(2)}%
-                    </Percentages>
+                    />
                     <Percentages
                       percent={item.price_change_percentage_7d_in_currency}
-                    >
-                      <img
-                        src={
-                          item.price_change_percentage_7d_in_currency < 0
-                            ? NegativeArrow
-                            : PositiveArrow
-                        }
-                        alt="arrow-icon"
-                      />
-                      {item.price_change_percentage_7d_in_currency.toFixed(2)}%
-                    </Percentages>
+                    />
+
                     <StyledCoinListBar
                       leftData={item.total_volume}
                       rightData={item.market_cap}
@@ -120,11 +87,10 @@ export default class CoinList extends React.Component {
             )}
             <InfiniteScroll
               dataLength={coinListData.length}
-              next={addCoinListLength}
-              hasMore={hasMore}
+              next={getCoinListData}
+              hasMore={true}
               scrollThreshold={1}
               loader={<Loader>Loading...</Loader>}
-              endMessage={<EndMessage>End of Coin List</EndMessage>}
             />
           </Container>
         )}
