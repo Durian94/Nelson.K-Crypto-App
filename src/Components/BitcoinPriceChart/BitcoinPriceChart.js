@@ -29,7 +29,7 @@ ChartJS.register(
 
 export default class BitcoinPriceChart extends React.Component {
   render() {
-    const { chartData, currentPrice } = this.props;
+    const { chartData } = this.props;
 
     const options = {
       responsive: true,
@@ -87,6 +87,7 @@ export default class BitcoinPriceChart extends React.Component {
       ],
     };
 
+    const currentPrice = chartData.prices[chartData.prices.length - 1][1];
     const todayInMiliseconds = chartData.total_volumes.slice(14);
     const getDate = new Date(
       parseFloat(todayInMiliseconds.map((item) => item[0]))

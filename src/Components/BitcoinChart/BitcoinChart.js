@@ -22,7 +22,6 @@ export default class BitcoinChart extends React.Component {
             <Container>
               <BitcoinPriceChart
                 chartData={bitcoinChartData}
-                currentPrice={coinListData[0].current_price}
                 currencySymbol={currencySymbol}
               />
               <BitcoinVolumeChart
