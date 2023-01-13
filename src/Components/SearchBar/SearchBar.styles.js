@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { Input } from "../Input/Input";
 
 export const SearchForm = styled.form`
@@ -7,6 +8,7 @@ export const SearchForm = styled.form`
   background-color: ${({ theme }) => theme.searchBarColor};
   padding: 0.5rem;
   border-radius: 0.5rem;
+  max-width: 20.68rem;
 `;
 
 export const StyledSearchIcon = styled.img`
@@ -27,4 +29,24 @@ export const SearchInput = styled(Input)`
   ::placeholder {
     color: ${({ theme }) => theme.textColor};
   }
+`;
+
+export const SuggestedCoins = styled.ul`
+  position: absolute;
+  top: 5rem;
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
+  max-width: 19.5rem;
+  max-height: 13rem;
+  overflow-y: scroll;
+  background-color: ${({ theme }) => theme.searchBarColor};
+  border: 0.5px solid ${({ theme }) => theme.inverted};
+`;
+
+export const StyledLink = styled(Link)`
+  font-weight: 700;
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `;

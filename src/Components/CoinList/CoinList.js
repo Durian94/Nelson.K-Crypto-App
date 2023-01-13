@@ -1,6 +1,7 @@
 import React from "react";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { separator } from "../../utilities/formatMoney/formatMoney";
 import {
   Container,
   CoinItem,
@@ -47,12 +48,12 @@ export default class CoinList extends React.Component {
                   <CoinItem key={item.id}>
                     <p>{item.market_cap_rank}</p>
                     <img src={item.image} alt="coin-logo" />
-                    <CoinName>
+                    <CoinName to={`/coin/${item.id}`}>
                       {item.name} ({item.symbol.toUpperCase()})
                     </CoinName>
                     <CurrentPrice>
                       {currencySymbol}
-                      {item.current_price}
+                      {separator(item.current_price)}
                     </CurrentPrice>
                     <Percentages
                       percent={item.price_change_percentage_1h_in_currency}
