@@ -10,3 +10,14 @@ export function shortHandCurrency(num) {
     return x.toFixed(2) + units[Math.floor(unit / 3) - 2];
   }
 }
+
+export function separator(num) {
+  let str = num.toString().split(".");
+  str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return str.join(".");
+}
+
+export function shortenLink(url) {
+  const link = new URL(url);
+  return link.origin;
+}

@@ -8,6 +8,7 @@ import { ThemeProvider } from "styled-components";
 import { GlobalStyle } from "./App.styles";
 import Home from "./Pages/Home/Home";
 import Navbar from "./Components/Navbar/Navbar";
+import Coinpage from "./Pages/Coinpage/Coinpage";
 
 const darkTheme = {
   main: "hsl(227, 13%, 14%)",
@@ -91,6 +92,13 @@ export default class App extends React.Component {
               path="/"
               element={
                 <Home currency={currency} currencySymbol={currencySymbol} />
+              }
+            />
+            <Page
+              exact
+              path="/coin/:coinName"
+              element={
+                <Coinpage currency={currency} currencySymbol={currencySymbol} />
               }
             />
           </Routes>

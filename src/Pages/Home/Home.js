@@ -81,7 +81,6 @@ export default class Home extends React.Component {
 
   render() {
     const { currencySymbol } = this.props;
-
     return (
       <Container>
         <BitcoinChart {...this.state} currencySymbol={currencySymbol} />

@@ -1,11 +1,12 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import CoinListBar from "../CoinListBar/CoinListBar";
 import { Percentage } from "../Percentages/Percentages";
 
 export const Container = styled.div`
   font-size: 16px;
   font-weight: 700;
-  background-color: ${(props) => props.theme.secondary};
+  background-color: ${({ theme }) => theme.secondary};
   padding: 1.5rem 1.1rem 3rem 1.1rem;
   border-radius: 0.7rem;
   margin-bottom: 3rem;
@@ -59,8 +60,10 @@ export const CoinItem = styled.div`
   }
 `;
 
-export const CoinName = styled.p`
+export const CoinName = styled(Link)`
   width: 14rem;
+  text-decoration: none;
+  color: ${({ theme }) => theme.textColor};
 `;
 
 export const CurrentPrice = styled.p`

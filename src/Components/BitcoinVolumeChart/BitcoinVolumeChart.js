@@ -71,8 +71,8 @@ export default class BitcoinVolumeChart extends React.Component {
       ],
     };
 
-    const currentVolume = data.datasets[0].data.slice(14);
-    const todayInMiliseconds = chartData.total_volumes.slice(15);
+    const currentVolume = data.datasets[0].data.slice(-1);
+    const todayInMiliseconds = chartData.total_volumes.slice(14);
     const getDate = new Date(
       parseFloat(todayInMiliseconds.map((item) => item[0]))
     );
