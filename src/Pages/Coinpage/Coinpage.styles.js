@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { CoinpageLink } from "../../Components/CoinpageLink/CoinpageLink";
+import { CurrencyCalculator } from "../../Components/CurrencyCalculator/CurrencyCalculator";
 
 export const Header = styled.h3`
   padding: 0 9rem;
@@ -142,6 +143,7 @@ export const LinkContainer = styled.div`
   display: flex;
   padding: 0 9rem;
   justify-content: space-between;
+  margin-bottom: 3rem;
 `;
 
 export const StyledCoinLink = styled(CoinpageLink)`
@@ -154,5 +156,50 @@ export const StyledCoinLink = styled(CoinpageLink)`
 
   p {
     color: ${({ theme }) => theme.textColor};
+  }
+`;
+
+export const TimeChartContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+export const StyledCurrencyCalculator = styled(CurrencyCalculator)`
+  display: flex;
+  gap: 2.5rem;
+  margin: 2rem 0;
+  text-transform: uppercase;
+  font-weight: 700;
+
+  div {
+    display: flex;
+    align-items: center;
+  }
+
+  p {
+    background-color: hsl(143, 95%, 40%);
+    height: 2.5rem;
+    padding: 0.7rem 0.7rem 0 0.7rem;
+    border-radius: 0.5rem 0 0 0.5rem;
+  }
+
+  input {
+    outline: none;
+    border: none;
+    background-color: ${({ theme }) => theme.secondary};
+    color: ${({ theme }) => theme.textColor};
+    font-size: 14px;
+    font-weight: 700;
+    height: 2.5rem;
+    padding-left: 1rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
   }
 `;

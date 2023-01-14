@@ -14,6 +14,8 @@ import {
   Description,
   StyledCoinLink,
   LinkContainer,
+  TimeChartContainer,
+  StyledCurrencyCalculator,
 } from "./Coinpage.styles";
 import PositiveArrow from "../../assets/images/positiveArrow.svg";
 import NegativeArrow from "../../assets/images/negativeArrow.svg";
@@ -25,6 +27,8 @@ class Coinpage extends React.Component {
     isLoading: false,
     hasError: false,
     coinData: null,
+    amount: 1,
+    cryptoValue: 0,
   };
 
   getCoinpageData = async () => {
@@ -54,17 +58,38 @@ class Coinpage extends React.Component {
         blockChainSite: data.links.blockchain_site,
       };
 
-      this.setState({ coinData: filteredItems, isLoading: false });
+      this.setState({
+        coinData: filteredItems,
+        isLoading: false,
+      });
     } catch (err) {
       this.setState({ hasError: true, isLoading: false });
     }
+  };
+
+  handleAmount = (e) => {
+    this.setState({
+      amount: e.target.value,
+      cryptoValue: (
+        e.target.value / this.state.coinData.currentPrice[this.props.currency]
+      ).toFixed(8),
+    });
+  };
+
+  handleCryptoValue = (e) => {
+    this.setState({
+      cryptoValue: e.target.value,
+      amount:
+        e.target.value *
+        this.state.coinData.currentPrice[this.props.currency].toFixed(2),
+    });
   };
 
   componentDidMount() {
     this.getCoinpageData();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (prevProps.params.coinName !== this.props.params.coinName) {
       this.getCoinpageData();
     }
@@ -178,6 +203,17 @@ class Coinpage extends React.Component {
               <StyledCoinLink link={shortenLink(coinData.blockChainSite[1])} />
               <StyledCoinLink link={shortenLink(coinData.blockChainSite[2])} />
             </LinkContainer>
+            <TimeChartContainer>
+              <StyledCurrencyCalculator
+                currency={currency}
+                coin={coinData.symbol}
+                currencySymbol={currencySymbol}
+                amount={this.state.amount}
+                cryptoValue={this.state.cryptoValue}
+                handleCryptoValue={this.handleCryptoValue}
+                handleAmount={this.handleAmount}
+              />
+            </TimeChartContainer>
           </>
         )}
       </>
