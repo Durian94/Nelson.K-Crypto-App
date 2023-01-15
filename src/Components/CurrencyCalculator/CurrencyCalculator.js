@@ -15,15 +15,15 @@ export const CurrencyCalculator = ({ className, ...props }) => (
         />
       </form>
     </div>
-    <img
-      src={CurrencyArrows}
-      alt="currency-arrows"
-      onChange={props.handleCryptoValue}
-    />
+    <img src={CurrencyArrows} alt="currency-arrows" />
     <div>
       <p>{props.coin}</p>
       <form>
-        <input type="number" value={props.cryptoValue} />
+        <input
+          type="number"
+          value={props.cryptoValue}
+          onChange={props.handleCryptoValue}
+        />
       </form>
     </div>
   </div>

@@ -56,7 +56,7 @@ class Search extends React.Component {
   render() {
     const { inputValue, suggestedCoins } = this.state;
     const filteredSearchList = suggestedCoins.filter((item) =>
-      item.name.includes(inputValue)
+      item.name.toLowerCase().includes(inputValue)
     );
 
     return (

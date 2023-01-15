@@ -3,6 +3,7 @@ import axios from "axios";
 import WithRouter from "../../Components/WithRouter/WithRouter";
 import { separator } from "../../utilities/formatMoney/formatMoney";
 import { shortenLink } from "../../utilities/formatMoney/formatMoney";
+import TimeChart from "../../Components/TimeChart/TimeChart";
 import {
   Cointainer,
   CoinBanner,
@@ -14,8 +15,8 @@ import {
   Description,
   StyledCoinLink,
   LinkContainer,
-  TimeChartContainer,
   StyledCurrencyCalculator,
+  StyledTimeOptions,
 } from "./Coinpage.styles";
 import PositiveArrow from "../../assets/images/positiveArrow.svg";
 import NegativeArrow from "../../assets/images/negativeArrow.svg";
@@ -27,8 +28,9 @@ class Coinpage extends React.Component {
     isLoading: false,
     hasError: false,
     coinData: null,
-    amount: 1,
+    amount: 0,
     cryptoValue: 0,
+    coinChartData: null,
   };
 
   getCoinpageData = async () => {
@@ -67,6 +69,25 @@ class Coinpage extends React.Component {
     }
   };
 
+  getChartData = async (num) => {
+    const { params, currency } = this.props;
+    const dateNow = Math.floor(Date.now() / 1000);
+    const customDate = dateNow - num * 86400;
+    try {
+      this.setState({ chartIsLoading: true });
+      const { data } = await axios(
+        `https://api.coingecko.com/api/v3/coins/${params.coinName}/market_chart/range?vs_currency=${currency}&from=${customDate}&to=${dateNow}&interval=daily`
+      );
+
+      this.setState({
+        coinChartData: data.prices,
+        IsLoading: false,
+      });
+    } catch (err) {
+      this.setState({ hasError: true, IsLoading: false });
+    }
+  };
+
   handleAmount = (e) => {
     this.setState({
       amount: e.target.value,
@@ -85,8 +106,13 @@ class Coinpage extends React.Component {
     });
   };
 
+  handleTimeframe = (e) => {
+    this.getChartData(e.target.value);
+  };
+
   componentDidMount() {
     this.getCoinpageData();
+    this.getChartData(1);
   }
 
   componentDidUpdate(prevProps) {
@@ -96,7 +122,7 @@ class Coinpage extends React.Component {
   }
 
   render() {
-    const { coinData, isLoading, hasError } = this.state;
+    const { coinData, isLoading, hasError, coinChartData } = this.state;
     const { currencySymbol, currency } = this.props;
 
     return (
@@ -203,17 +229,19 @@ class Coinpage extends React.Component {
               <StyledCoinLink link={shortenLink(coinData.blockChainSite[1])} />
               <StyledCoinLink link={shortenLink(coinData.blockChainSite[2])} />
             </LinkContainer>
-            <TimeChartContainer>
-              <StyledCurrencyCalculator
-                currency={currency}
-                coin={coinData.symbol}
-                currencySymbol={currencySymbol}
-                amount={this.state.amount}
-                cryptoValue={this.state.cryptoValue}
-                handleCryptoValue={this.handleCryptoValue}
-                handleAmount={this.handleAmount}
-              />
-            </TimeChartContainer>
+            <StyledTimeOptions handleTimeframe={this.handleTimeframe} />
+            <StyledCurrencyCalculator
+              currency={currency}
+              coin={coinData.symbol}
+              currencySymbol={currencySymbol}
+              amount={this.state.amount}
+              cryptoValue={this.state.cryptoValue}
+              handleCryptoValue={this.handleCryptoValue}
+              handleAmount={this.handleAmount}
+            />
+            {coinChartData !== null && (
+              <TimeChart coinChartData={coinChartData} />
+            )}
           </>
         )}
       </>
