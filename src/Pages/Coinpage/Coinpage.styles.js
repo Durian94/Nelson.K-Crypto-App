@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { CoinpageLink } from "../../Components/CoinpageLink/CoinpageLink";
 import { CurrencyCalculator } from "../../Components/CurrencyCalculator/CurrencyCalculator";
+import { TimeOptions } from "../../Components/TimeOptions/TimeOptions";
 
 export const Header = styled.h3`
   padding: 0 9rem;
@@ -108,10 +109,10 @@ export const PriceData = styled(BlackBox)`
 `;
 
 export const MarketData = styled(BlackBox)`
-  padding: 2rem;
+  padding: 2rem 1rem;
   p {
     font-weight: 700;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.5rem;
     display: flex;
     gap: 0.5rem;
@@ -159,15 +160,11 @@ export const StyledCoinLink = styled(CoinpageLink)`
   }
 `;
 
-export const TimeChartContainer = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
 export const StyledCurrencyCalculator = styled(CurrencyCalculator)`
   display: flex;
+  justify-content: center;
   gap: 2.5rem;
-  margin: 2rem 0;
+  margin: 3rem 0;
   text-transform: uppercase;
   font-weight: 700;
 
@@ -201,5 +198,42 @@ export const StyledCurrencyCalculator = styled(CurrencyCalculator)`
   }
   input[type="number"] {
     -moz-appearance: textfield;
+  }
+`;
+
+export const StyledTimeOptions = styled(TimeOptions)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  label {
+    margin-right: 0.5rem;
+    border: 2px solid hsl(120, 100%, 30%);
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  span {
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    border-radius: 50%;
+    background-color: hsl(143, 95%, 45%);
+    display: none;
+  }
+
+  input {
+    display: none;
+  }
+
+  input:checked + span {
+    display: inline-block;
+  }
+
+  p {
+    margin-right: 1rem;
   }
 `;
