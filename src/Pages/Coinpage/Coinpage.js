@@ -30,7 +30,6 @@ class Coinpage extends React.Component {
     coinData: null,
     amount: 0,
     cryptoValue: 0,
-    chartIsLoading: false,
     coinChartData: null,
   };
 
@@ -82,10 +81,10 @@ class Coinpage extends React.Component {
 
       this.setState({
         coinChartData: data.prices,
-        chartIsLoading: false,
+        IsLoading: false,
       });
     } catch (err) {
-      this.setState({ hasError: true, chartIsLoading: false });
+      this.setState({ hasError: true, IsLoading: false });
     }
   };
 
@@ -123,8 +122,7 @@ class Coinpage extends React.Component {
   }
 
   render() {
-    const { coinData, isLoading, hasError, coinChartData, chartIsLoading } =
-      this.state;
+    const { coinData, isLoading, hasError, coinChartData } = this.state;
     const { currencySymbol, currency } = this.props;
 
     return (
@@ -241,7 +239,7 @@ class Coinpage extends React.Component {
               handleCryptoValue={this.handleCryptoValue}
               handleAmount={this.handleAmount}
             />
-            {!chartIsLoading && !hasError && coinChartData !== null && (
+            {coinChartData !== null && (
               <TimeChart coinChartData={coinChartData} />
             )}
           </>
