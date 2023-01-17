@@ -1,26 +1,34 @@
-import React from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import _ from "lodash";
 import CoinList from "../../Components/CoinList/CoinList";
 import BitcoinChart from "../../Components/BitcoinChart/BitcoinChart";
 import { Container } from "./Home.styles";
 
-export default class Home extends React.Component {
-  state = {
+export default function Home(props) {
+  const [state, setState] = useState({
     isLoading: false,
     hasError: false,
     coinListData: [],
     bitcoinChartData: null,
     pages: 0,
-  };
+  });
+  const { isLoading, hasError, coinListData, bitcoinChartData, pages } = state;
+  const { currency, currencySymbol } = props;
+  const prevProps = useRef(currency);
+  const prevState = useRef(pages);
 
-  getCoinListData = async () => {
+  const getCoinListData = async () => {
     try {
-      const nextPage = this.state.pages + 1;
-      this.setState({ isLoading: true, pages: nextPage });
+      const nextPage = pages + 1;
+      setState((prevState) => ({
+        ...prevState,
+        pages: nextPage,
+        isLoading: true,
+      }));
 
       const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${this.props.currency}&order=market_cap_desc&per_page=20
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=20
         &page=${nextPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
       );
       const newPageData = _.map(data, (obj) => ({
@@ -42,54 +50,81 @@ export default class Home extends React.Component {
         ]),
       }));
 
-      this.setState({
-        coinListData: [...this.state.coinListData, ...newPageData],
+      setState((prevState) => ({
+        ...prevState,
+        coinListData: [...state.coinListData, ...newPageData],
         isLoading: false,
-      });
+      }));
     } catch (err) {
-      this.setState({ hasError: true, isLoading: false });
+      setState((prevState) => ({
+        ...prevState,
+        error: true,
+        isLoading: false,
+      }));
     }
   };
 
-  getBitcoinData = async () => {
+  const getBitcoinData = async () => {
     try {
-      this.setState({ isLoading: true });
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${this.props.currency}&days=15&interval=daily`
-      );
+      setState((prevState) => ({
+        ...prevState,
+        isLoading: true,
+      }));
 
-      this.setState({ bitcoinChartData: data, isLoading: false });
+      const { data } = await axios(
+        `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=15&interval=daily`
+      );
+      setState((prevState) => ({
+        ...prevState,
+        isLoading: false,
+        bitcoinChartData: data,
+      }));
     } catch (err) {
-      this.setState({ hasError: true, isLoading: false });
+      setState((prevState) => ({
+        ...prevState,
+        error: true,
+        isLoading: false,
+      }));
     }
   };
 
-  componentDidMount() {
-    this.getCoinListData();
-    this.getBitcoinData();
-  }
+  useEffect(() => {
+    getCoinListData();
+    getBitcoinData();
+  }, []);
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.currency !== this.props.currency) {
-      this.setState({ coinListData: [], pages: 0 });
-      this.getBitcoinData();
+  useEffect(() => {
+    if (prevProps.current.currency !== currency) {
+      setState((prevState) => ({
+        ...prevState,
+        pages: 0,
+        coinListData: [],
+      }));
+      getBitcoinData();
     }
-    if (prevState.pages !== this.state.pages && this.state.pages === 0) {
-      this.getCoinListData();
+    if (prevState.current.pages !== pages && pages === 0) {
+      getCoinListData();
     }
-  }
+    prevProps.current = props;
+    prevState.current = pages;
+  }, [currency, pages]);
 
-  render() {
-    const { currencySymbol } = this.props;
-    return (
-      <Container>
-        <BitcoinChart {...this.state} currencySymbol={currencySymbol} />
-        <CoinList
-          {...this.state}
-          currencySymbol={currencySymbol}
-          getCoinListData={this.getCoinListData}
-        />
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <BitcoinChart
+        bitcoinChartData={bitcoinChartData}
+        coinListData={coinListData}
+        isLoading={isLoading}
+        hasError={hasError}
+        currencySymbol={currencySymbol}
+      />
+      <CoinList
+        coinListData={coinListData}
+        isLoading={isLoading}
+        hasError={hasError}
+        currencySymbol={currencySymbol}
+        getCoinListData={getCoinListData}
+      />
+    </Container>
+  );
 }

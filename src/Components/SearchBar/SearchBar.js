@@ -1,7 +1,7 @@
-import React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router";
 import axios from "axios";
 import _ from "lodash";
-import WithRouter from "../../Components/WithRouter/WithRouter";
 import {
   SearchForm,
   StyledSearchIcon,
@@ -12,17 +12,16 @@ import {
 import SearchIcon from "../../assets/images/Search.png";
 import SearchIconLight from "../../assets/images/Search-light.png";
 
-class Search extends React.Component {
-  state = {
-    inputValue: "",
-    suggestedCoins: [],
-    isLoading: false,
-    hasError: false,
-  };
+export default function Search(props) {
+  const [inputValue, setInputValue] = useState("");
+  const [suggestedCoins, setSuggestedCoins] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [hasError, setError] = useState(false);
+  const navigate = useNavigate();
 
-  getSearchSuggestions = async (value) => {
+  const getSearchSuggestions = async (value) => {
     try {
-      this.setState({ isLoading: true });
+      setLoading(true);
       const { data } = await axios(
         `https://api.coingecko.com/api/v3/search?query=${value}`
       );
@@ -31,62 +30,61 @@ class Search extends React.Component {
         ..._.pick(obj, ["id", "thumb", "name", "symbol"]),
       }));
 
-      this.setState({ suggestedCoins: list, isLoading: false });
+      setLoading(false);
+      setSuggestedCoins(list);
     } catch (err) {
-      this.setState({ hasError: true, isLoading: false });
+      setLoading(false);
+      setError(true);
     }
   };
 
-  handleInput = (e) => {
-    this.setState({ inputValue: e.target.value });
-    this.getSearchSuggestions(this.state.inputValue);
+  const handleInput = (e) => {
+    setInputValue(e.target.value);
+    getSearchSuggestions(inputValue);
   };
 
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    this.setState({ inputValue: "" });
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.location.key !== prevProps.location.key) {
-      this.setState({ inputValue: "" });
-    }
-  }
+  const handleClick = (url) => {
+    setInputValue("");
+    navigate(url);
+  };
 
-  render() {
-    const { inputValue, suggestedCoins } = this.state;
-    const filteredSearchList = suggestedCoins.filter((item) =>
-      item.name.toLowerCase().includes(inputValue)
-    );
+  const filteredSearchList = suggestedCoins.filter((item) =>
+    item.name.toLowerCase().includes(inputValue)
+  );
 
-    return (
-      <SearchForm onSubmit={this.handleSubmit}>
-        {this.props.isThemeDark && (
-          <StyledSearchIcon src={SearchIcon} alt="search-icon" />
+  return (
+    <SearchForm onSubmit={handleSubmit}>
+      {props.isThemeDark && (
+        <StyledSearchIcon src={SearchIcon} alt="search-icon" />
+      )}
+      {!props.isThemeDark && (
+        <StyledSearchIcon src={SearchIconLight} alt="search-icon" />
+      )}
+      <SearchInput
+        placeholder="Search..."
+        handleInput={handleInput}
+        inputValue={inputValue}
+      />
+      {inputValue &&
+        filteredSearchList.length > 0 &&
+        filteredSearchList.length < 25 && (
+          <SuggestedCoins>
+            {suggestedCoins.map((coin) => (
+              <StyledLink
+                to={`/coin/${coin.id}`}
+                key={coin.id}
+                onClick={() => handleClick(`/coin/${coin.id}`)}
+              >
+                <img src={coin.thumb} alt="icon" />
+                {coin.name} ({coin.symbol})
+              </StyledLink>
+            ))}
+          </SuggestedCoins>
         )}
-        {!this.props.isThemeDark && (
-          <StyledSearchIcon src={SearchIconLight} alt="search-icon" />
-        )}
-        <SearchInput
-          placeholder="Search..."
-          handleInput={this.handleInput}
-          inputValue={inputValue}
-        />
-        {inputValue &&
-          filteredSearchList.length > 0 &&
-          filteredSearchList.length < 25 && (
-            <SuggestedCoins>
-              {suggestedCoins.map((coin) => (
-                <StyledLink to={`/coin/${coin.id}`} key={coin.id}>
-                  <img src={coin.thumb} alt="icon" />
-                  {coin.name} ({coin.symbol})
-                </StyledLink>
-              ))}
-            </SuggestedCoins>
-          )}
-      </SearchForm>
-    );
-  }
+    </SearchForm>
+  );
 }
-
-export default WithRouter(Search);

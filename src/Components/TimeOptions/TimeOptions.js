@@ -1,11 +1,11 @@
-export const TimeOptions = ({ className, ...props }) => (
+export const TimeOptions = ({ className, handleTimeframe }) => (
   <form className={className}>
     <label>
       <input
         type="radio"
         name="select-time"
         value={1}
-        onClick={props.handleTimeframe}
+        onClick={handleTimeframe}
       />
       <span></span>
     </label>
@@ -15,7 +15,7 @@ export const TimeOptions = ({ className, ...props }) => (
         type="radio"
         name="select-time"
         value={7}
-        onClick={props.handleTimeframe}
+        onClick={handleTimeframe}
       />
       <span></span>
     </label>
@@ -25,7 +25,7 @@ export const TimeOptions = ({ className, ...props }) => (
         type="radio"
         name="select-time"
         value={30}
-        onClick={props.handleTimeframe}
+        onClick={handleTimeframe}
       />
       <span></span>
     </label>
@@ -35,7 +35,7 @@ export const TimeOptions = ({ className, ...props }) => (
         type="radio"
         name="select-time"
         value={90}
-        onClick={props.handleTimeframe}
+        onClick={handleTimeframe}
       />
       <span></span>
     </label>
@@ -45,7 +45,7 @@ export const TimeOptions = ({ className, ...props }) => (
         type="radio"
         name="select-time"
         value={360}
-        onClick={props.handleTimeframe}
+        onClick={handleTimeframe}
       />
       <span></span>
     </label>
@@ -55,7 +55,7 @@ export const TimeOptions = ({ className, ...props }) => (
         type="radio"
         name="select-time"
         value={5000}
-        onChange={props.handleTimeframe}
+        onClick={handleTimeframe}
       />
       <span></span>
     </label>
