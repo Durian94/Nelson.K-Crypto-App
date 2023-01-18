@@ -1,4 +1,3 @@
-import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,6 +5,7 @@ import {
 } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyle } from "./App.styles";
+import { useLocalState } from "./utilities/Hooks/Hooks";
 import Home from "./Pages/Home/Home";
 import Navbar from "./Components/Navbar/Navbar";
 import Coinpage from "./Pages/Coinpage/Coinpage";
@@ -26,84 +26,53 @@ const lightTheme = {
   searchBarColor: "hsl(0, 0%, 98%)",
 };
 
-export default class App extends React.Component {
-  state = {
-    isThemeDark: true,
-    currency: "usd",
+export default function App() {
+  const [isThemeDark, setTheme] = useLocalState("isThemeDark", true);
+  const [currency, setCurrency] = useLocalState("currency", "usd");
+
+  const handleTheme = () => {
+    setTheme(!isThemeDark);
   };
 
-  handleTheme = () => {
-    this.setState({ isThemeDark: !this.state.isThemeDark });
-    this.setInStorage();
+  const getCurrencyChange = (e) => {
+    setCurrency(e.target.value);
   };
 
-  getCurrencyChange = (e) => {
-    this.setState({ currency: e.target.value });
-  };
+  const currencySymbol = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currency,
+  })
+    .format(0)
+    .replace(/[a-zA-Z0-9.]/g, "");
 
-  setInStorage = () => {
-    localStorage.setItem("isThemeDark", JSON.stringify(this.state.isThemeDark));
-  };
-
-  componentDidMount() {
-    if (JSON.parse(localStorage.getItem("isThemeDark")) !== null) {
-      this.setState({
-        isThemeDark: JSON.parse(localStorage.getItem("isThemeDark")),
-      });
-    }
-    if (JSON.parse(localStorage.getItem("currency")) !== null) {
-      this.setState({
-        currency: JSON.parse(localStorage.getItem("currency")),
-      });
-    }
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.isThemeDark !== this.state.isThemeDark) {
-      this.setInStorage();
-    }
-    if (prevState.currency !== this.state.currency) {
-      localStorage.setItem("currency", JSON.stringify(this.state.currency));
-    }
-  }
-
-  render() {
-    const { isThemeDark, currency } = this.state;
-    const currencySymbol = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: currency,
-    })
-      .format(0)
-      .replace(/[a-zA-Z0-9.]/g, "");
-
-    return (
-      <ThemeProvider theme={isThemeDark ? darkTheme : lightTheme}>
-        <Router>
-          <GlobalStyle />
-          <Navbar
-            handleTheme={this.handleTheme}
-            getCurrency={this.getCurrencyChange}
-            isThemeDark={isThemeDark}
-            currency={currency}
-            currencySymbol={currencySymbol}
+  return (
+    <ThemeProvider theme={isThemeDark ? darkTheme : lightTheme}>
+      <Router>
+        <GlobalStyle />
+        <Navbar
+          handleTheme={handleTheme}
+          getCurrency={getCurrencyChange}
+          isThemeDark={isThemeDark}
+          currency={currency}
+          currencySymbol={currencySymbol}
+        />
+        <Routes>
+          <Page
+            exact
+            path="/"
+            element={
+              <Home currency={currency} currencySymbol={currencySymbol} />
+            }
           />
-          <Routes>
-            <Page
-              exact
-              path="/"
-              element={
-                <Home currency={currency} currencySymbol={currencySymbol} />
-              }
-            />
-            <Page
-              exact
-              path="/coin/:coinName"
-              element={
-                <Coinpage currency={currency} currencySymbol={currencySymbol} />
-              }
-            />
-          </Routes>
-        </Router>
-      </ThemeProvider>
-    );
-  }
+          <Page
+            exact
+            path="/coin/:coinName"
+            element={
+              <Coinpage currency={currency} currencySymbol={currencySymbol} />
+            }
+          />
+        </Routes>
+      </Router>
+    </ThemeProvider>
+  );
 }

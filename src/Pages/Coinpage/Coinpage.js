@@ -1,6 +1,6 @@
-import React from "react";
+import { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router";
 import axios from "axios";
-import WithRouter from "../../Components/WithRouter/WithRouter";
 import { separator } from "../../utilities/formatMoney/formatMoney";
 import { shortenLink } from "../../utilities/formatMoney/formatMoney";
 import TimeChart from "../../Components/TimeChart/TimeChart";
@@ -17,27 +17,39 @@ import {
   LinkContainer,
   StyledCurrencyCalculator,
   StyledTimeOptions,
+  Loader,
 } from "./Coinpage.styles";
 import PositiveArrow from "../../assets/images/positiveArrow.svg";
 import NegativeArrow from "../../assets/images/negativeArrow.svg";
 import PaperIcon from "../../assets/images/price-data-icon.svg";
 import LinkIcon from "../../assets/images/link-icon.svg";
 
-class Coinpage extends React.Component {
-  state = {
+export default function Coinpage(props) {
+  const [state, setState] = useState({
     isLoading: false,
+    isChartLoading: false,
     hasError: false,
     coinData: null,
     amount: 0,
     cryptoValue: 0,
     coinChartData: null,
-  };
+  });
 
-  getCoinpageData = async () => {
+  const { coinData, isLoading, hasError, coinChartData, cryptoValue, amount } =
+    state;
+  const { currencySymbol, currency } = props;
+  const params = useParams();
+  const prevProps = useRef(params);
+
+  const getCoinpageData = async () => {
     try {
-      this.setState({ isLoading: true });
+      setState((prevState) => ({
+        ...prevState,
+        isLoading: true,
+      }));
+
       const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/${this.props.params.coinName}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
+        `https://api.coingecko.com/api/v3/coins/${params.coinName}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
       );
 
       const filteredItems = {
@@ -60,193 +72,200 @@ class Coinpage extends React.Component {
         blockChainSite: data.links.blockchain_site,
       };
 
-      this.setState({
-        coinData: filteredItems,
+      setState((prevState) => ({
+        ...prevState,
         isLoading: false,
-      });
+        coinData: filteredItems,
+      }));
     } catch (err) {
-      this.setState({ hasError: true, isLoading: false });
+      setState((prevState) => ({
+        ...prevState,
+        isLoading: false,
+        hasError: true,
+      }));
     }
   };
 
-  getChartData = async (num) => {
-    const { params, currency } = this.props;
+  const getChartData = async (num) => {
     const dateNow = Math.floor(Date.now() / 1000);
     const customDate = dateNow - num * 86400;
     try {
-      this.setState({ chartIsLoading: true });
+      setState((prevState) => ({
+        ...prevState,
+        isChartLoading: true,
+      }));
       const { data } = await axios(
         `https://api.coingecko.com/api/v3/coins/${params.coinName}/market_chart/range?vs_currency=${currency}&from=${customDate}&to=${dateNow}&interval=daily`
       );
 
-      this.setState({
+      setState((prevState) => ({
+        ...prevState,
+        isChartLoading: false,
         coinChartData: data.prices,
-        IsLoading: false,
-      });
+      }));
     } catch (err) {
-      this.setState({ hasError: true, IsLoading: false });
+      setState((prevState) => ({
+        ...prevState,
+        isChartLoading: false,
+        hasError: true,
+      }));
     }
   };
 
-  handleAmount = (e) => {
-    this.setState({
+  const handleAmount = (e) => {
+    setState((prevState) => ({
+      ...prevState,
       amount: e.target.value,
-      cryptoValue: (
-        e.target.value / this.state.coinData.currentPrice[this.props.currency]
-      ).toFixed(8),
-    });
+      cryptoValue: (e.target.value / coinData.currentPrice[currency]).toFixed(
+        8
+      ),
+    }));
   };
 
-  handleCryptoValue = (e) => {
-    this.setState({
+  const handleCryptoValue = (e) => {
+    setState((prevState) => ({
+      ...prevState,
       cryptoValue: e.target.value,
-      amount:
-        e.target.value *
-        this.state.coinData.currentPrice[this.props.currency].toFixed(2),
-    });
+      amount: e.target.value * coinData.currentPrice[currency].toFixed(2),
+    }));
   };
 
-  handleTimeframe = (e) => {
-    this.getChartData(e.target.value);
+  const handleTimeframe = (e) => {
+    getChartData(e.target.value);
+    console.log(e.target.value);
   };
 
-  componentDidMount() {
-    this.getCoinpageData();
-    this.getChartData(1);
-  }
+  useEffect(() => {
+    getCoinpageData();
+    getChartData(1);
+    // eslint-disable-next-line
+  }, []);
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.params.coinName !== this.props.params.coinName) {
-      this.getCoinpageData();
+  useEffect(() => {
+    if (prevProps.current.params !== params) {
+      getCoinpageData();
     }
-  }
+    prevProps.current = params;
+    // eslint-disable-next-line
+  }, [params]);
 
-  render() {
-    const { coinData, isLoading, hasError, coinChartData } = this.state;
-    const { currencySymbol, currency } = this.props;
-
-    return (
-      <>
-        <Header>Your Summary</Header>
-        {isLoading && !hasError && <h3>Loading...</h3>}
-        {!hasError && !isLoading && coinData !== null && (
-          <>
-            <Cointainer>
-              <CoinBanner>
-                <div>
-                  <img src={coinData.image} alt="coin-icon" />
-                  <p>
-                    {coinData.name} ({coinData.symbol})
-                  </p>
-                </div>
-                <div>
-                  <img src={LinkIcon} alt="link-icon" />
-                  <a
-                    href={coinData.link}
-                    target="_blank"
-                    without
-                    rel="noreferrer"
-                  >
-                    {coinData.link}
-                  </a>
-                </div>
-              </CoinBanner>
-              <PriceData percentage={coinData.price_24h}>
-                <div>
-                  <h3>
-                    {currencySymbol}
-                    {separator(coinData.currentPrice[currency])}
-                  </h3>
-                  <p>
-                    <img
-                      src={
-                        coinData.price_24h >= 0 ? PositiveArrow : NegativeArrow
-                      }
-                      alt="arrow"
-                    />
-                    {coinData.price_24h.toFixed(2)}%
-                  </p>
-                </div>
-                <div>
-                  <img src={PaperIcon} alt="paper-icon" />
-                </div>
-
-                <div>
-                  <img src={PositiveArrow} alt="green-arrow" />
-                  <p>
-                    All Time High: {currencySymbol}
-                    {coinData.ath[currency]}
-                    <br></br>
-                    {coinData.athDate[currency].slice(0, 10)}
-                  </p>
-                </div>
-                <div>
-                  <img src={NegativeArrow} alt="red-arrow" />
-                  <p>
-                    All Time Low: {currencySymbol}
-                    {coinData.atl[currency]}
-                    <br></br>
-                    {coinData.atlDate[currency].slice(0, 10)}
-                  </p>
-                </div>
-              </PriceData>
-              <MarketData>
+  return (
+    <>
+      <Header>Your Summary</Header>
+      {isLoading && !hasError && <Loader>Loading...</Loader>}
+      {!hasError && !isLoading && coinData !== null && (
+        <>
+          <Cointainer>
+            <CoinBanner>
+              <div>
+                <img src={coinData.image} alt="coin-icon" />
                 <p>
-                  <PlusIcon>+</PlusIcon>Market Cap: {currencySymbol}
-                  {separator(coinData.marketCap[currency])}
+                  {coinData.name} ({coinData.symbol})
                 </p>
-                <p>
-                  <PlusIcon>+</PlusIcon>Fully Diluted Valuation:{" "}
+              </div>
+              <div>
+                <img src={LinkIcon} alt="link-icon" />
+                <a
+                  href={coinData.link}
+                  target="_blank"
+                  without
+                  rel="noreferrer"
+                >
+                  {coinData.link}
+                </a>
+              </div>
+            </CoinBanner>
+            <PriceData percentage={coinData.price_24h}>
+              <div>
+                <h3>
                   {currencySymbol}
-                  {coinData.valuation[currency]}
-                </p>
+                  {separator(coinData.currentPrice[currency])}
+                </h3>
                 <p>
-                  <PlusIcon>+</PlusIcon>Volume 24: n/a
+                  <img
+                    src={
+                      coinData.price_24h >= 0 ? PositiveArrow : NegativeArrow
+                    }
+                    alt="arrow"
+                  />
+                  {coinData.price_24h.toFixed(2)}%
                 </p>
-                <p>
-                  <PlusIcon>+</PlusIcon>Total Volume:{" "}
-                  {separator(coinData.totalVolume[currency])}{" "}
-                  <UpperCaseText>{coinData.symbol}</UpperCaseText>
-                </p>
-                <p>
-                  <PlusIcon>+</PlusIcon>Circulating Supply:{" "}
-                  {coinData.circSupply}{" "}
-                  <UpperCaseText>{coinData.symbol}</UpperCaseText>
-                </p>
-                <p>
-                  <PlusIcon>+</PlusIcon>Max Supply: {coinData.maxSupply}{" "}
-                  <UpperCaseText>{coinData.symbol}</UpperCaseText>
-                </p>
-              </MarketData>
-            </Cointainer>
-            <Header>Description</Header>
-            <Description>
-              <img src={PaperIcon} alt="paper-icon" />
-              <p dangerouslySetInnerHTML={{ __html: coinData.description }}></p>
-            </Description>
-            <LinkContainer>
-              <StyledCoinLink link={shortenLink(coinData.blockChainSite[0])} />
-              <StyledCoinLink link={shortenLink(coinData.blockChainSite[1])} />
-              <StyledCoinLink link={shortenLink(coinData.blockChainSite[2])} />
-            </LinkContainer>
-            <StyledTimeOptions handleTimeframe={this.handleTimeframe} />
-            <StyledCurrencyCalculator
-              currency={currency}
-              coin={coinData.symbol}
-              currencySymbol={currencySymbol}
-              amount={this.state.amount}
-              cryptoValue={this.state.cryptoValue}
-              handleCryptoValue={this.handleCryptoValue}
-              handleAmount={this.handleAmount}
-            />
-            {coinChartData !== null && (
-              <TimeChart coinChartData={coinChartData} />
-            )}
-          </>
-        )}
-      </>
-    );
-  }
-}
+              </div>
+              <div>
+                <img src={PaperIcon} alt="paper-icon" />
+              </div>
 
-export default WithRouter(Coinpage);
+              <div>
+                <img src={PositiveArrow} alt="green-arrow" />
+                <p>
+                  All Time High: {currencySymbol}
+                  {coinData.ath[currency]}
+                  <br></br>
+                  {coinData.athDate[currency].slice(0, 10)}
+                </p>
+              </div>
+              <div>
+                <img src={NegativeArrow} alt="red-arrow" />
+                <p>
+                  All Time Low: {currencySymbol}
+                  {coinData.atl[currency]}
+                  <br></br>
+                  {coinData.atlDate[currency].slice(0, 10)}
+                </p>
+              </div>
+            </PriceData>
+            <MarketData>
+              <p>
+                <PlusIcon>+</PlusIcon>Market Cap: {currencySymbol}
+                {separator(coinData.marketCap[currency])}
+              </p>
+              <p>
+                <PlusIcon>+</PlusIcon>Fully Diluted Valuation: {currencySymbol}
+                {coinData.valuation[currency]}
+              </p>
+              <p>
+                <PlusIcon>+</PlusIcon>Volume 24: n/a
+              </p>
+              <p>
+                <PlusIcon>+</PlusIcon>Total Volume:{" "}
+                {separator(coinData.totalVolume[currency])}{" "}
+                <UpperCaseText>{coinData.symbol}</UpperCaseText>
+              </p>
+              <p>
+                <PlusIcon>+</PlusIcon>Circulating Supply: {coinData.circSupply}{" "}
+                <UpperCaseText>{coinData.symbol}</UpperCaseText>
+              </p>
+              <p>
+                <PlusIcon>+</PlusIcon>Max Supply: {coinData.maxSupply}{" "}
+                <UpperCaseText>{coinData.symbol}</UpperCaseText>
+              </p>
+            </MarketData>
+          </Cointainer>
+          <Header>Description</Header>
+          <Description>
+            <img src={PaperIcon} alt="paper-icon" />
+            <p dangerouslySetInnerHTML={{ __html: coinData.description }}></p>
+          </Description>
+          <LinkContainer>
+            <StyledCoinLink link={shortenLink(coinData.blockChainSite[0])} />
+            <StyledCoinLink link={shortenLink(coinData.blockChainSite[1])} />
+            <StyledCoinLink link={shortenLink(coinData.blockChainSite[2])} />
+          </LinkContainer>
+          <StyledTimeOptions handleTimeframe={handleTimeframe} />
+          <StyledCurrencyCalculator
+            currency={currency}
+            coin={coinData.symbol}
+            currencySymbol={currencySymbol}
+            amount={amount}
+            cryptoValue={cryptoValue}
+            handleCryptoValue={handleCryptoValue}
+            handleAmount={handleAmount}
+          />
+          {coinChartData !== null && (
+            <TimeChart coinChartData={coinChartData} />
+          )}
+        </>
+      )}
+    </>
+  );
+}

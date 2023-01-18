@@ -237,3 +237,7 @@ export const StyledTimeOptions = styled(TimeOptions)`
     margin-right: 1rem;
   }
 `;
+
+export const Loader = styled.h3`
+  text-align: center;
+`;
