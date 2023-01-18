@@ -6,14 +6,12 @@ import BitcoinChart from "../../Components/BitcoinChart/BitcoinChart";
 import { Container } from "./Home.styles";
 
 export default function Home(props) {
-  const [state, setState] = useState({
-    isLoading: false,
-    hasError: false,
-    coinListData: [],
-    bitcoinChartData: null,
-    pages: 0,
-  });
-  const { isLoading, hasError, coinListData, bitcoinChartData, pages } = state;
+  const [isLoading, setLoad] = useState(false);
+  const [hasError, setError] = useState(false);
+  const [coinListData, setCoinListData] = useState([]);
+  const [bitcoinChartData, setBitcoinData] = useState(null);
+  const [pages, setPages] = useState(0);
+
   const { currency, currencySymbol } = props;
   const prevProps = useRef(currency);
   const prevState = useRef(pages);
@@ -21,16 +19,13 @@ export default function Home(props) {
   const getCoinListData = async () => {
     try {
       const nextPage = pages + 1;
-      setState((prevState) => ({
-        ...prevState,
-        pages: nextPage,
-        isLoading: true,
-      }));
-
+      setLoad(true);
+      setPages(nextPage);
       const { data } = await axios(
         `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=20
         &page=${nextPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
       );
+
       const newPageData = _.map(data, (obj) => ({
         ..._.pick(obj, [
           "id",
@@ -50,56 +45,40 @@ export default function Home(props) {
         ]),
       }));
 
-      setState((prevState) => ({
-        ...prevState,
-        coinListData: [...state.coinListData, ...newPageData],
-        isLoading: false,
-      }));
+      setCoinListData([...coinListData, ...newPageData]);
+      setLoad(false);
     } catch (err) {
-      setState((prevState) => ({
-        ...prevState,
-        error: true,
-        isLoading: false,
-      }));
+      setLoad(false);
+      setError(true);
     }
   };
 
   const getBitcoinData = async () => {
     try {
-      setState((prevState) => ({
-        ...prevState,
-        isLoading: true,
-      }));
-
+      setLoad(true);
       const { data } = await axios(
         `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=15&interval=daily`
       );
-      setState((prevState) => ({
-        ...prevState,
-        isLoading: false,
-        bitcoinChartData: data,
-      }));
+
+      setBitcoinData(data);
+      setLoad(false);
     } catch (err) {
-      setState((prevState) => ({
-        ...prevState,
-        error: true,
-        isLoading: false,
-      }));
+      setLoad(false);
+      setError(true);
     }
   };
 
   useEffect(() => {
     getCoinListData();
+    // eslint-disable-next-line
     getBitcoinData();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     if (prevProps.current.currency !== currency) {
-      setState((prevState) => ({
-        ...prevState,
-        pages: 0,
-        coinListData: [],
-      }));
+      setPages(0);
+      setCoinListData([]);
       getBitcoinData();
     }
     if (prevState.current.pages !== pages && pages === 0) {
@@ -107,6 +86,7 @@ export default function Home(props) {
     }
     prevProps.current = props;
     prevState.current = pages;
+    // eslint-disable-next-line
   }, [currency, pages]);
 
   return (
