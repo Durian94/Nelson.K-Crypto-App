@@ -1,3 +1,6 @@
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect, useRef } from "react";
+import { fetchCoinListData } from "../../store/Home/actions";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { separator } from "../../utilities/formatMoney/formatMoney";
@@ -13,9 +16,36 @@ import {
   Loader,
 } from "./CoinList.styles";
 
-export default function CoinList(props) {
-  const { isLoading, hasError, coinListData, currencySymbol, getCoinListData } =
-    props;
+export default function CoinList() {
+  const [pages, setPage] = useState(1);
+  const { coinListData, isLoading, hasError } = useSelector(
+    (state) => state.homeData
+  );
+  const { currency, currencySymbol } = useSelector(
+    (state) => state.localStorage
+  );
+  const dispatch = useDispatch();
+  const prevState = useRef(currency);
+
+  useEffect(() => {
+    dispatch(fetchCoinListData(pages));
+    setPage(pages + 1);
+    // eslint-disable-next-line
+  }, []);
+
+  const incrementPage = () => {
+    setPage(pages + 1);
+    dispatch(fetchCoinListData(pages));
+    // eslint-disable-next-line
+  };
+
+  useEffect(() => {
+    if (prevState.current.currency !== currency && pages === 0) {
+      dispatch(fetchCoinListData(pages));
+    }
+    prevState.current = currency;
+    // eslint-disable-next-line
+  }, [currency]);
 
   return (
     <>
@@ -81,7 +111,7 @@ export default function CoinList(props) {
           )}
           <InfiniteScroll
             dataLength={coinListData.length}
-            next={getCoinListData}
+            next={incrementPage}
             hasMore={true}
             scrollThreshold={1}
             loader={<Loader>Loading...</Loader>}

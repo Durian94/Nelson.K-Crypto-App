@@ -1,3 +1,6 @@
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchNavbarData } from "../../store/navbar/actions";
 import {
   TableRowContainer,
   TableData,
@@ -7,8 +10,19 @@ import { shortHandCurrency } from "../../utilities/formatMoney/formatMoney";
 import PositiveArrow from "../../assets/images/positiveArrow.svg";
 import NegativeArrow from "../../assets/images/negativeArrow.svg";
 
-export default function NavbarTable(props) {
-  const { isLoading, hasError, navbarData, currency, currencySymbol } = props;
+export default function NavbarTable() {
+  const { currency, currencySymbol } = useSelector(
+    (state) => state.localStorage
+  );
+  const { navbarData, isLoading, hasError } = useSelector(
+    (state) => state.navbarData
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchNavbarData());
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <TableRowContainer>
