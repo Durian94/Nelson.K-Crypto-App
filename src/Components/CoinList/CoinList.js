@@ -40,10 +40,11 @@ export default function CoinList() {
   };
 
   useEffect(() => {
-    if (prevState.current.currency !== currency && pages === 0) {
-      dispatch(fetchCoinListData(pages));
+    if (prevState.current.currency !== currency) {
+      dispatch(fetchCoinListData(0));
+      setPage(2);
     }
-    prevState.current = currency;
+    // prevState.current = currency;
     // eslint-disable-next-line
   }, [currency]);
 

@@ -20,7 +20,10 @@ const appReducer = createSlice({
       })
         .format(0)
         .replace(/[a-zA-Z0-9.]/g, "");
-      localStorage.setItem("currency", JSON.stringify(state.currencySymbol));
+      localStorage.setItem(
+        "currencySymbol",
+        JSON.stringify(state.currencySymbol)
+      );
       localStorage.setItem("currency", JSON.stringify(action.currency));
     });
   },
