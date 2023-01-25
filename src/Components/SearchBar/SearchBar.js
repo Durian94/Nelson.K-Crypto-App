@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import axios from "axios";
-import _ from "lodash";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchSearchResults } from "../../store/search/actions";
 import {
   SearchForm,
   StyledSearchIcon,
@@ -12,35 +12,16 @@ import {
 import SearchIcon from "../../assets/images/Search.png";
 import SearchIconLight from "../../assets/images/Search-light.png";
 
-export default function Search(props) {
+export default function Search() {
   const [inputValue, setInputValue] = useState("");
-  const [suggestedCoins, setSuggestedCoins] = useState([]);
-  const [isLoading, setLoading] = useState(false);
-  const [hasError, setError] = useState(false);
+  const { suggestedCoins } = useSelector((state) => state.searchData);
+  const { isThemeDark } = useSelector((state) => state.localStorage);
   const navigate = useNavigate();
-
-  const getSearchSuggestions = async (value) => {
-    try {
-      setLoading(true);
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/search?query=${value}`
-      );
-
-      const list = _.map(data.coins, (obj) => ({
-        ..._.pick(obj, ["id", "thumb", "name", "symbol"]),
-      }));
-
-      setLoading(false);
-      setSuggestedCoins(list);
-    } catch (err) {
-      setLoading(false);
-      setError(true);
-    }
-  };
+  const dispatch = useDispatch();
 
   const handleInput = (e) => {
     setInputValue(e.target.value);
-    getSearchSuggestions(inputValue);
+    dispatch(fetchSearchResults(inputValue));
   };
 
   const handleSubmit = (e) => {
@@ -58,10 +39,8 @@ export default function Search(props) {
 
   return (
     <SearchForm onSubmit={handleSubmit}>
-      {props.isThemeDark && (
-        <StyledSearchIcon src={SearchIcon} alt="search-icon" />
-      )}
-      {!props.isThemeDark && (
+      {isThemeDark && <StyledSearchIcon src={SearchIcon} alt="search-icon" />}
+      {!isThemeDark && (
         <StyledSearchIcon src={SearchIconLight} alt="search-icon" />
       )}
       <SearchInput
@@ -71,7 +50,7 @@ export default function Search(props) {
       />
       {inputValue &&
         filteredSearchList.length > 0 &&
-        filteredSearchList.length < 25 && (
+        filteredSearchList.length < 50 && (
           <SuggestedCoins>
             {suggestedCoins.map((coin) => (
               <StyledLink

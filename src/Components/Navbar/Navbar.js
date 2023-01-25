@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setTheme } from "../../store/app/actions";
 import Search from "../SearchBar/SearchBar";
 import NavbarTable from "../NavbarTable/NavbarTable";
 import {
@@ -16,30 +16,11 @@ import { faSun } from "@fortawesome/free-solid-svg-icons";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import GreenArrow from "../../assets/images/positiveArrow.svg";
 
-export default function Navbar(props) {
-  const [isLoading, setLoading] = useState(false);
-  const [hasError, setError] = useState(false);
-  const [navbarData, setNavbarData] = useState(null);
-
-  const getTableData = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios("https://api.coingecko.com/api/v3/global");
-
-      setLoading(false);
-      setNavbarData(data);
-    } catch (err) {
-      setLoading(false);
-      setError(true);
-    }
-  };
-
-  useEffect(() => {
-    getTableData();
-  }, []);
-
-  const { handleTheme, isThemeDark, getCurrency, currency, currencySymbol } =
-    props;
+export default function Navbar() {
+  const { isThemeDark, currencySymbol } = useSelector(
+    (state) => state.localStorage
+  );
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -52,25 +33,16 @@ export default function Navbar(props) {
           <Search isThemeDark={isThemeDark} />
           <CurrencyButton>
             <p>{currencySymbol}</p>
-            <StyledCurrencySelector
-              getCurrency={getCurrency}
-              currency={currency}
-            />
+            <StyledCurrencySelector />
             <img src={GreenArrow} alt="green-arrow" />
           </CurrencyButton>
-          <ThemeButton onClick={handleTheme}>
+          <ThemeButton onClick={() => dispatch(setTheme())}>
             {isThemeDark && <FontAwesomeIcon icon={faSun} />}
             {!isThemeDark && <FontAwesomeIcon icon={faMoon} />}
           </ThemeButton>
         </RightNavContainer>
       </Container>
-      <NavbarTable
-        navbarData={navbarData}
-        isLoading={isLoading}
-        hasError={hasError}
-        currency={currency}
-        currencySymbol={currencySymbol}
-      />
+      <NavbarTable />
     </>
   );
 }
