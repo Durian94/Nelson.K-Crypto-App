@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import Home from "./Pages/Home/Home";
 import Navbar from "./Components/Navbar/Navbar";
 import Coinpage from "./Pages/Coinpage/Coinpage";
+import Portfolio from "./Pages/Portfolio/Portfolio";
 
 const darkTheme = {
   main: "hsl(227, 13%, 14%)",
@@ -37,6 +38,7 @@ export default function App() {
         <Routes>
           <Page exact path="/" element={<Home />} />
           <Page exact path="/coin/:coinName" element={<Coinpage />} />
+          <Page exact path="/portfolio" element={<Portfolio />} />
         </Routes>
       </Router>
     </ThemeProvider>

@@ -27,7 +27,7 @@ export const CurrencyCalculator = ({ className, ...props }) => {
         <form>
           <input
             type="number"
-            value={props.cryptoValue.toFixed(8)}
+            value={props.cryptoValue}
             onChange={props.handleCryptoValue}
           />
         </form>
