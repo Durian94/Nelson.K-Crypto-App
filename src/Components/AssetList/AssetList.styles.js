@@ -27,6 +27,15 @@ export const CoinIcon = styled.div`
     background-color: ${({ theme }) => theme.main};
     padding: 1rem;
   }
+
+  button {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    color: ${({ theme }) => theme.textColor};
+    background-color: hsl(143, 95%, 43%);
+    font-weight: 700;
+  }
 `;
 
 export const DataContainer = styled.div`

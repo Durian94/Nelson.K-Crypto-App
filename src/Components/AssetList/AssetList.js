@@ -1,9 +1,10 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   separator,
   findPercentage,
   findCurrentValue,
 } from "../../utilities/formatMoney/formatMoney";
+import { removeCoin } from "../../store/portfolio/actions";
 import {
   Container,
   CoinContainer,
@@ -23,6 +24,7 @@ export default function AssetList() {
   const { currency, currencySymbol } = useSelector(
     (state) => state.localStorage
   );
+  const dispatch = useDispatch();
 
   return (
     <Container>
@@ -43,6 +45,9 @@ export default function AssetList() {
                   <p>
                     {coin.id} ({coin.symbol.toUpperCase()})
                   </p>
+                  <button onClick={() => dispatch(removeCoin(coin.id))}>
+                    Delete
+                  </button>
                 </CoinIcon>
                 <DataContainer>
                   <Header>Market Price:</Header>

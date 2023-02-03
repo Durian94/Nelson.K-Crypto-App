@@ -18,7 +18,7 @@ import {
 
 export default function CoinSelectorForm(props) {
   const [openCalendar, setCalendar] = useState(false);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [purchaseDate, setDate] = useState(new Date());
   const { searchedCoins, portfolio } = useSelector((state) => state.portfolio);
@@ -35,7 +35,7 @@ export default function CoinSelectorForm(props) {
         })
       );
     }
-    setAmount(0);
+    setAmount("");
     setDate(new Date());
     setInputValue("");
   };
@@ -63,7 +63,7 @@ export default function CoinSelectorForm(props) {
     prevState.current = portfolio;
     // eslint-disable-next-line
   }, [portfolio]);
-
+  console.log(typeof amount);
   const date = purchaseDate.toString().slice(4, 15);
   return (
     <Container>
@@ -90,7 +90,7 @@ export default function CoinSelectorForm(props) {
           </CoinList>
         )}
         <input
-          value={amount === 0 ? "Purchased Amount" : amount}
+          value={amount}
           onChange={(e) => setAmount(e.target.value)}
           type="number"
           placeholder="Purchased Amount"

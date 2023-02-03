@@ -112,3 +112,10 @@ export const fetchPortfolioData = createAsyncThunk(
     }
   }
 );
+
+export const removeCoin = (elementId) => {
+  return {
+    type: "REMOVE_COIN",
+    elementId: elementId,
+  };
+};
