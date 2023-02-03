@@ -1,5 +1,9 @@
 import { useSelector } from "react-redux";
-import { separator } from "../../utilities/formatMoney/formatMoney";
+import {
+  separator,
+  findPercentage,
+  findCurrentValue,
+} from "../../utilities/formatMoney/formatMoney";
 import {
   Container,
   CoinContainer,
@@ -60,29 +64,27 @@ export default function AssetList() {
                     <p>
                       Market Cap vs Volume:{" "}
                       <PercentageData
-                        percent={
-                          (coin.marketCap[currency] /
-                            coin.totalVolume[currency]) *
-                          100
-                        }
+                        percent={findPercentage(
+                          coin.marketCap[currency],
+                          coin.totalVolume[currency]
+                        )}
                       >
-                        {(
-                          (coin.totalVolume[currency] /
-                            coin.marketCap[currency]) *
-                          100
-                        ).toFixed(0) || "n/a"}
+                        {findPercentage(
+                          coin.marketCap[currency],
+                          coin.totalVolume[currency]
+                        )}
                         %
                       </PercentageData>
                     </p>
                     <p>
                       Circ Supply vs Max Supply:{" "}
                       <PercentageData
-                        percent={(coin.maxSupply / coin.circSupply) * 100}
+                        percent={findPercentage(
+                          coin.maxSupply,
+                          coin.circSupply
+                        )}
                       >
-                        {((coin.maxSupply / coin.circSupply) * 100).toFixed(
-                          0
-                        ) || "n/a"}
-                        %{" "}
+                        {findPercentage(coin.maxSupply, coin.circSupply)}%{" "}
                       </PercentageData>
                     </p>
                   </MarketPriceData>
@@ -104,19 +106,15 @@ export default function AssetList() {
                     <p>
                       Price Change Since Purchase:{" "}
                       <PercentageData
-                        percent={
-                          ((coin.currentPrice[currency] -
-                            coin.historyPrice[currency]) /
-                            coin.historyPrice[currency]) *
-                          100
-                        }
+                        percent={findCurrentValue(
+                          coin.currentPrice[currency],
+                          coin.historyPrice[currency]
+                        )}
                       >
-                        {(
-                          ((coin.currentPrice[currency] -
-                            coin.historyPrice[currency]) /
-                            coin.historyPrice[currency]) *
-                          100
-                        ).toFixed(0) || "n/a"}
+                        {findCurrentValue(
+                          coin.currentPrice[currency],
+                          coin.historyPrice[currency]
+                        )}
                         %
                       </PercentageData>
                     </p>
