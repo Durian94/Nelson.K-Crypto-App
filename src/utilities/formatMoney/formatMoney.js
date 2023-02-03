@@ -21,3 +21,15 @@ export function shortenLink(url) {
   const link = new URL(url);
   return link.origin;
 }
+
+export function findPercentage(num1, num2) {
+  const valueNumbers = num1 && num2 !== null;
+
+  return valueNumbers ? ((num1 / num2) * 100).toFixed(0) : "n/a";
+}
+
+export function findCurrentValue(num1, num2) {
+  const valueNumbers = num1 && num2 !== null;
+
+  return valueNumbers ? (((num1 - num2) / num2) * 100).toFixed(0) : "n/a";
+}

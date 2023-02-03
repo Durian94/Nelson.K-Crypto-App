@@ -27,7 +27,7 @@ export default function Navbar() {
       <Container>
         <NavContainer>
           <StyledNavLink to="/">Coins</StyledNavLink>
-          <StyledNavLink>Portfolio</StyledNavLink>
+          <StyledNavLink to="/portfolio">Portfolio</StyledNavLink>
         </NavContainer>
         <RightNavContainer>
           <Search isThemeDark={isThemeDark} />
