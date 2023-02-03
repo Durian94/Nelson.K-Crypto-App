@@ -63,7 +63,7 @@ export default function CoinSelectorForm(props) {
     prevState.current = portfolio;
     // eslint-disable-next-line
   }, [portfolio]);
-  console.log(typeof amount);
+
   const date = purchaseDate.toString().slice(4, 15);
   return (
     <Container>
