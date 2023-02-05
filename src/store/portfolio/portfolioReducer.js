@@ -40,6 +40,11 @@ const portfolioReducer = createSlice({
       .addCase(fetchPortfolioData.rejected, (state) => {
         state.hasError = true;
         state.isLoading = false;
+      })
+      .addCase("REMOVE_COIN", (state, action) => {
+        state.portfolio = state.portfolio.filter(
+          (coin) => coin.id !== action.elementId
+        );
       });
   },
 });

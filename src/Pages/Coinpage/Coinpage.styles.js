@@ -241,3 +241,10 @@ export const StyledTimeOptions = styled(TimeOptions)`
 export const Loader = styled.h3`
   text-align: center;
 `;
+
+export const NoLink = styled.p`
+  color: ${({ theme }) => theme.textColor};
+  padding: 1rem;
+  background-color: ${({ theme }) => theme.secondary};
+  border-radius: 0.5rem;
+`;
