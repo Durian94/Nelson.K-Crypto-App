@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { separator } from "../../utilities/formatMoney/formatMoney";
-import { shortenLink } from "../../utilities/formatMoney/formatMoney";
 import {
   fetchCoinpageData,
   fetchChartData,
@@ -177,9 +176,9 @@ export default function Coinpage() {
             <p dangerouslySetInnerHTML={{ __html: coinData.description }}></p>
           </Description>
           <LinkContainer>
-            <StyledCoinLink link={shortenLink(coinData.blockChainSite[0])} />
-            <StyledCoinLink link={shortenLink(coinData.blockChainSite[1])} />
-            <StyledCoinLink link={shortenLink(coinData.blockChainSite[2])} />
+            <StyledCoinLink link={coinData.blockChainSite[0]} />
+            <StyledCoinLink link={coinData.blockChainSite[1]} />
+            <StyledCoinLink link={coinData.blockChainSite[2]} />
           </LinkContainer>
           <StyledTimeOptions handleTimeframe={handleTimeframe} />
           <StyledCurrencyCalculator
