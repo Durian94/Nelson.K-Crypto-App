@@ -40,6 +40,13 @@ export const fetchCoinListData = createAsyncThunk(
   }
 );
 
+export const sortCoinList = (order) => {
+  return {
+    type: "SORT_FILTER",
+    order: order,
+  };
+};
+
 export const fetchBitcoinData = createAsyncThunk(
   "FETCH_BITCOIN_DATA",
   async (currency, { getState }) => {
