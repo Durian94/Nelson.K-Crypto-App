@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect, useRef } from "react";
 import { fetchCoinListData } from "../../store/Home/actions";
 import { Sparklines, SparklinesLine } from "react-sparklines";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowUpWideShort } from "@fortawesome/free-solid-svg-icons";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { separator } from "../../utilities/formatMoney/formatMoney";
 import {
@@ -14,6 +16,7 @@ import {
   Percentages,
   CurrentPrice,
   Loader,
+  StyledCoinListFilter,
 } from "./CoinList.styles";
 
 export default function CoinList() {
@@ -44,7 +47,7 @@ export default function CoinList() {
       dispatch(fetchCoinListData(0));
       setPage(2);
     }
-    // prevState.current = currency;
+
     // eslint-disable-next-line
   }, [currency]);
 
@@ -55,13 +58,24 @@ export default function CoinList() {
       {!isLoading && hasError && <p>Error!</p>}
       {coinListData.length && (
         <Container>
+          <StyledCoinListFilter />
           <CoinListHeaders>
-            <p>#</p>
+            <p>
+              # <FontAwesomeIcon icon={faArrowUpWideShort} />
+            </p>
             <p>Name</p>
-            <p>Price</p>
-            <p>1h%</p>
-            <p>24h%</p>
-            <p>7d%</p>
+            <p>
+              Price <FontAwesomeIcon icon={faArrowUpWideShort} />
+            </p>
+            <p>
+              1h% <FontAwesomeIcon icon={faArrowUpWideShort} />
+            </p>
+            <p>
+              24h% <FontAwesomeIcon icon={faArrowUpWideShort} />
+            </p>
+            <p>
+              7d% <FontAwesomeIcon icon={faArrowUpWideShort} />
+            </p>
             <p>24h Volume/Market Cap</p>
             <p>Circulating/Total Supply</p>
             <p>Last 7d</p>

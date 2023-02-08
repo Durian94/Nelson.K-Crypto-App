@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import CoinListBar from "../CoinListBar/CoinListBar";
+import CoinListFilter from "../CoinListFilter/CoinListFilter";
 import { Percentage } from "../Percentages/Percentages";
 
 export const Container = styled.div`
@@ -24,11 +25,12 @@ export const CoinListHeaders = styled.div`
   display: flex;
   margin: 1rem 0 1rem 0;
   font-size: 13px;
-  gap: 1.5rem;
+  gap: 1.3rem;
   padding-left: 0.5rem;
 
   p:nth-child(2) {
-    width: 14.7rem;
+    width: 14rem;
+    padding-left: 2rem;
   }
 
   p:nth-child(3) {
@@ -36,7 +38,7 @@ export const CoinListHeaders = styled.div`
   }
 
   p:nth-child(4) {
-    width: 7rem;
+    width: 7.5rem;
   }
 
   p:nth-child(5) {
@@ -44,7 +46,7 @@ export const CoinListHeaders = styled.div`
   }
 
   p:nth-child(6) {
-    width: 5.5rem;
+    width: 6rem;
   }
 `;
 
@@ -118,4 +120,19 @@ export const ProgressBar = styled.div`
 export const Loader = styled.h4`
   text-align: center;
   margin-top: 2rem;
+`;
+
+export const StyledCoinListFilter = styled(CoinListFilter)`
+  display: flex;
+  margin-bottom: 2rem;
+
+  select {
+    background-color: ${({ theme }) => theme.secondary};
+    color: ${({ theme }) => theme.textColor};
+    font-weight: 700;
+    border: none;
+    outline: none;
+    margin: 0 0 0 0.5rem;
+    width: 7rem;
+  }
 `;
