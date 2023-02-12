@@ -29,12 +29,12 @@ export default function Search() {
   const navigate = useNavigate();
   const dispatch: any = useDispatch();
 
-  const handleInput = (e: any) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     dispatch(fetchSearchResults(inputValue));
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 

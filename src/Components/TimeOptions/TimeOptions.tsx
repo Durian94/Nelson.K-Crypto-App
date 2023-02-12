@@ -1,11 +1,9 @@
-import { ClickHandler } from "../../utilities/types/types";
-
 export const TimeOptions = ({
   className,
   handleTimeframe,
 }: {
   className?: string;
-  handleTimeframe: ClickHandler;
+  handleTimeframe: React.MouseEventHandler<HTMLInputElement>;
 }) => (
   <form className={className}>
     <label>

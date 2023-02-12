@@ -42,12 +42,12 @@ export default function CoinSelectorForm(props: any) {
     setInputValue("");
   };
 
-  const handleCoinName = (e: any) => {
-    setInputValue(e.target.innerText);
+  const handleCoinName = (e: React.MouseEvent<HTMLLIElement>) => {
+    setInputValue(e.currentTarget.innerText);
     dispatch(resetSearch());
   };
 
-  const handleSearch = (e: any) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     dispatch(fetchCoinName(inputValue));
   };

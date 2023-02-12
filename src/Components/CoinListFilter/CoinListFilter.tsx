@@ -10,7 +10,7 @@ export default function CoinListFilter({ className }: { className?: string }) {
   const sortType = location.search.split("=")[1];
   const [loading, setLoading] = useState(true);
 
-  const handleSort = (e: any) => {
+  const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(sortCoinList(e.target.value));
     navigate({
       search: `?sort=${e.target.value}`,

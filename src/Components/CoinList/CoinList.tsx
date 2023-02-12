@@ -132,7 +132,9 @@ export default function CoinList() {
             hasMore={true}
             scrollThreshold={1}
             loader={<Loader>Loading...</Loader>}
-          ></InfiniteScroll>
+          >
+            <div></div>
+          </InfiniteScroll>
         </Container>
       )}
     </>

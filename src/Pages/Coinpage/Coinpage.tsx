@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { LocalStorageState } from "../../store/app/appReducer";
@@ -41,20 +41,29 @@ export default function Coinpage() {
   const prevProps: any = useRef(params);
   const dispatch: any = useDispatch();
 
-  const handleAmount = (e: any) => {
-    setAmount(e.target.value);
-    setCryptoValue(e.target.value / coinData.currentPrice[currency].toFixed(8));
+  const handleAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(parseFloat(e.target.value));
+    setCryptoValue(
+      parseFloat(e.target.value) / coinData.currentPrice[currency].toFixed(8)
+    );
   };
 
-  const handleCryptoValue = (e: any) => {
-    setCryptoValue(e.target.value);
-    setAmount(e.target.value * coinData.currentPrice[currency].toFixed(2));
+  const handleCryptoValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCryptoValue(parseFloat(e.target.value));
+    setAmount(
+      parseFloat(e.target.value) * coinData.currentPrice[currency].toFixed(2)
+    );
   };
 
-  const handleTimeframe = (e: any) => {
-    const parameters = {
+  const handleTimeframe = (e: React.MouseEvent<HTMLInputElement>) => {
+    interface Parameters {
+      name: string;
+      number: number;
+      currency: string;
+    }
+    const parameters: Parameters = {
       name: params.coinName,
-      number: e.target.value,
+      number: parseInt(e.currentTarget.value),
       currency: currency,
     };
     dispatch(fetchChartData(parameters));
