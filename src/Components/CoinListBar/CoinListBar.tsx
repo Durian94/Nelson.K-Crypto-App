@@ -1,5 +1,5 @@
 import { ProgressBar, ProgressBarData } from "../CoinList/CoinList.styles";
-import { shortHandCurrency } from "../../utilities/formatMoney/formatMoney";
+import { shortHandCurrency } from "../../utilities/formatMoney/functions";
 
 interface CoinListBarProps {
   className?: string;

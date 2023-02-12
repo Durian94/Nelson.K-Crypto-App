@@ -7,7 +7,7 @@ import {
   TableData,
   NavbarProgressBar,
 } from "./NavbarTable.styles";
-import { shortHandCurrency } from "../../utilities/formatMoney/formatMoney";
+import { shortHandCurrency } from "../../utilities/formatMoney/functions";
 import PositiveArrow from "../../assets/images/positiveArrow.svg";
 import NegativeArrow from "../../assets/images/negativeArrow.svg";
 

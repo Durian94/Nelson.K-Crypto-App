@@ -33,3 +33,11 @@ export function findCurrentValue(num1: number, num2: number) {
 
   return valueNumbers ? (((num1 - num2) / num2) * 100).toFixed(0) : "n/a";
 }
+
+export function tryParse(value: string | null) {
+  try {
+    return value === null ? null : JSON.parse(value);
+  } catch (error) {
+    return null;
+  }
+}

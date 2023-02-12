@@ -10,7 +10,7 @@ import {
   Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { shortHandCurrency } from "../../utilities/formatMoney/formatMoney";
+import { shortHandCurrency } from "../../utilities/formatMoney/functions";
 import {
   ChartContainer,
   ChartHeader,

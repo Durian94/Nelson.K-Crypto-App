@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { tryParse } from "../../utilities/formatMoney/functions";
 
 interface AppState {
   currency: string;
@@ -11,9 +12,9 @@ export interface LocalStorageState extends AppState {
 }
 
 const initialState: AppState = {
-  currency: JSON.parse(localStorage.getItem("currency") || "usd"),
-  currencySymbol: JSON.parse(localStorage.getItem("currencySymbol") || "$"),
-  isThemeDark: JSON.parse(localStorage.getItem("isThemeDark") || "") || true,
+  currency: tryParse(localStorage.getItem("currency")) || "usd",
+  currencySymbol: tryParse(localStorage.getItem("currencySymbol")) || "$",
+  isThemeDark: tryParse(localStorage.getItem("isThemeDark")) || true,
 };
 
 const appReducer = createSlice({

@@ -1,4 +1,4 @@
-import { shortenLink } from "../../utilities/formatMoney/formatMoney";
+import { shortenLink } from "../../utilities/formatMoney/functions";
 import { NoLink } from "../../Pages/Coinpage/Coinpage.styles";
 import LinkIcon from "../../assets/images/link-icon.svg";
 import WindowIcon from "../../assets/images/new-window.svg";

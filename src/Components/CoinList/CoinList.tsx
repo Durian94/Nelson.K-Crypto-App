@@ -7,7 +7,7 @@ import { Sparklines, SparklinesLine } from "react-sparklines";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpWideShort } from "@fortawesome/free-solid-svg-icons";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { separator } from "../../utilities/formatMoney/formatMoney";
+import { separator } from "../../utilities/formatMoney/functions";
 import {
   Container,
   CoinItem,

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { LocalStorageState } from "../../store/app/appReducer";
-import { separator } from "../../utilities/formatMoney/formatMoney";
+import { separator } from "../../utilities/formatMoney/functions";
 import {
   fetchCoinpageData,
   fetchChartData,

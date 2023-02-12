@@ -3,7 +3,7 @@ import {
   separator,
   findPercentage,
   findCurrentValue,
-} from "../../utilities/formatMoney/formatMoney";
+} from "../../utilities/formatMoney/functions";
 import { removeCoin } from "../../store/portfolio/actions";
 import { LocalStorageState } from "../../store/app/appReducer";
 import {
