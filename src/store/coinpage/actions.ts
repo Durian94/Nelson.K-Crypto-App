@@ -44,7 +44,7 @@ export const fetchChartData = createAsyncThunk(
       const customDate = dateNow - coin.number * 86400;
 
       const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/${coin.name}/market_chart/range?vs_currency=${coin.currency}&from=${customDate}&to=${dateNow}&interval=daily`
+        `https://api.coingecko.com/api/v3/coins/${coin.name}/market_chart/range?vs_currency=${coin.currency}&from=${customDate}&to=${dateNow}`
       );
 
       return data.prices;
